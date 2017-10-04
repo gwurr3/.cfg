@@ -80,6 +80,9 @@ if contains "$IS_THIS_A_MAC" "TRUE" ; then
 	alias icloud='cd ~/Library/Mobile\ Documents/com~apple~CloudDocs'
 fi
 
+alias dotfiles='git --git-dir=$HOME/.cfg/ --work-tree=$HOME' # this is for the git repo that this file is a part of
+alias dotfiles-update='dotfiles status && dotfiles pull && dotfiles submodule init && dotfiles submodule update && dotfiles submodule status && dotfiles status'
+
 #######---------------- iterm2 integrations if shell is bash
 if contains "$0" "bash" ; then 
 	#test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
