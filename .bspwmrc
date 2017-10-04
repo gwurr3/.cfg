@@ -1,0 +1,105 @@
+#! /bin/sh
+
+if [ -e "$BSPWM_STATE" ] ; then
+	bspc wm -l "$BSPWM_STATE"
+	rm "$BSPWM_STATE"
+else
+	case "$SHORTHOSTNAME" in
+		sexbox)
+			#bspc monitor DVI-0 -d I II III IV V VI VII
+			#bspc monitor DisplayPort-0 -d VIII IX X
+			#bspc monitor DVI-0 --rename side
+			bspc monitor DVI-1 --rename side
+			bspc monitor DisplayPort-0 --rename 4K
+			# DisplayPort-0 connected primary 3840x2160+1200+0
+			bspc wm --add-monitor topleft 1920x1080+1200+0
+			bspc wm --add-monitor botleft 1920x1080+1200+1080
+			bspc wm --add-monitor topright 1920x1080+3120+0
+			bspc wm --add-monitor botright 1920x1080+3120+1080
+			bspc monitor botleft -d I II III
+			bspc monitor side -d IRC1
+			bspc monitor topleft -d IRC2 IRC3
+			bspc monitor topright -d misc
+			bspc monitor botright -d WEB2 WEB1
+			bspc monitor 4K -d BIG
+			;;
+		baldr)
+			bspc monitor HDMI1 --rename LEFT
+			bspc monitor VGA1 --rename RIGHT
+			bspc wm --add-monitor BOTH 3840x1080+0+0
+			bspc monitor LEFT -d I II IRC1 IRC2 K misc
+			bspc monitor RIGHT -d misc2 WEB2 WEB1
+			bspc monitor BOTH -d BIG
+			;;
+		fourten)
+			bspc monitor LVDS1 --rename MAIN
+			bspc monitor MAIN -d I II IRC1 IRC2 K misc misc2 WEB2 WEB1
+			;;
+		*)
+			bspc monitor -d I II IRC1 IRC2 K misc misc2 WEB2 WEB1 BIG
+			;;
+
+	esac
+
+	# handle existing windows
+	bspc wm -o
+	#
+	bspc desktop WEB1 -l monocle
+	bspc desktop WEB2 -l monocle
+fi
+
+## global settings
+
+bspc config external_rules_command "$(which bsp_external_rules)"
+
+bspc config border_width        6
+bspc config window_gap          2
+bspc config top_padding $PANEL_HEIGHT
+bspc config bottom_padding $PANEL_HEIGHT
+
+bspc config split_ratio          0.52
+#bspc config borderless_monocle   true
+bspc config gapless_monocle      true
+
+bspc config focus_follows_pointer      true
+bspc config pointer_follows_monitor      true
+
+
+#Color of the border of an unfocused window.
+bspc config normal_border_color $B_base02
+
+#Color of the border of a focused window of an unfocused monitor.
+bspc config active_border_color $B_base04
+
+#Color of the border of a focused window of a focused monitor.
+bspc config focused_border_color $B_base08
+
+#Color of the node --presel-{dir,ratio} message feedback area.
+bspc config presel_feedback_color $B_base0A
+# for urgent: B_base0E
+
+
+
+## fine tune settings per box
+case "$SHORTHOSTNAME" in
+	sexbox)
+		# so we don't have a giant gap in the middle of the 4K display with 'fake monitors'
+		bspc config -m topright bottom_padding 0
+		bspc config -m topleft bottom_padding 0
+		# to make room for the megabar on the top of the 4K monitor
+		bspc config -m topright top_padding 36
+		bspc config -m topleft top_padding 36
+		# dont want gaps on 4K
+		bspc config -d BIG window_gap 0
+		;;
+	*)
+
+		;;
+
+esac
+
+topbar &
+bottombar &
+
+# so we don't re-run the startup progs everytime we quit bspwm but don't leave the loop in .xinitrc
+[ ! -f "$AUTOSTARTCHECKFILE" ] && bsp_autostart && touch "$AUTOSTARTCHECKFILE"

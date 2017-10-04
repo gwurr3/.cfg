@@ -1,0 +1,105 @@
+#! /bin/sh
+
+# we need the following extra utils for this to work:
+# https://github.com/wmutils/core
+# https://github.com/baskerville/xtitle
+# the X11 'xprop' utility
+
+wid=$1
+class=$2
+instance=$3
+fwid=$(bspc query -N -n focused.automatic)
+title=$(xtitle "$wid")
+role=$(xprop -id "$wid" -f WM_WINDOW_ROLE 0s '$0+' WM_WINDOW_ROLE | cut -s -f2 -d'"' | tr -d '\n\r')
+
+
+if [ -n "$role" ] ; then
+	case "$role" in
+		pop-up)
+			echo "state=floating"
+			echo "layer=above"
+			echo "follow=on"
+			echo "focus=off"
+			;;
+	esac
+fi
+
+
+
+if [ -n "$class" ] ; then
+	case "$class" in
+		Gimp|MPlayer|com-sun-javaws-Main)
+			echo "state=floating"
+			#echo "follow=on"
+			echo "layer=above"
+			;;
+		Firefox|google-chrome|chromium|surf|luakit)
+			echo "desktop=WEB1"
+						;;
+		Hexchat)
+			echo "desktop=IRC1"
+			;;
+		Slack)
+			echo "desktop=IRC2"
+			;;
+		Pidgin)
+			echo "desktop=IRC2"
+			;;
+		KayakoDesktop.exe|Kayako*)
+			echo "desktop=K"
+			echo "state=pseudo_tiled"
+			;;
+		Pinta)
+			echo "state=pseudo_tiled"
+			;;
+	esac
+fi
+
+if [ -n "$title" ] ; then
+	case "$title" in
+		scratchpad)
+			#echo "sticky=on"
+			echo "state=floating"
+			echo "layer=above"
+			;;
+		ignore)
+			echo "manage=off"
+			;;
+	esac
+fi
+
+if [ "$instance" = fontforge ] ; then
+	case "$title" in
+		Layers|Tools|Warning)
+			echo "focus = off"
+			;;
+	esac
+fi
+
+if [ -n "$fwid" ] ; then
+	wattr wh $fwid | {
+		read width height
+		if [ $width -gt $height ] ; then
+			echo "split_dir=west"
+		else
+			echo "split_dir=south"
+		fi
+		echo "split_ratio=0.65"
+	}
+fi
+
+## for testing
+
+#echo -e "
+#wid = $wid \n
+#class = $class \n
+#instance = $instance \n
+#fwid = $fwid \n
+#title = $title \n
+#role = $role \n
+#\n " > ~/TESTLOG.txt
+
+
+
+
+

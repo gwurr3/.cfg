@@ -1,0 +1,73 @@
+# vim: syntax=sh:
+#
+
+
+## Base16 Eighties Chris Kempson (http://chriskempson.com)
+# https://chriskempson.github.io/base16/
+export B_base00="#2d2d2d"
+export B_base01="#393939"
+export B_base02="#515151"
+export B_base03="#747369"
+export B_base04="#a09f93"
+export B_base05="#d3d0c8"
+export B_base06="#e8e6df"
+export B_base07="#f2f0ec"
+export B_base08="#f2777a"
+export B_base09="#f99157"
+export B_base0A="#ffcc66"
+export B_base0B="#99cc99"
+export B_base0C="#66cccc"
+export B_base0D="#6699cc"
+export B_base0E="#cc99cc"
+export B_base0F="#d27b53"
+#
+
+export BSPWM_STATE="$HOME/last-bspwm-state.json"
+
+export AUTOSTARTCHECKFILE="$HOME/.autostartranfile"
+
+
+export DMENU_NF=$B_base05
+export DMENU_NB=$B_base00
+export DMENU_SF=$B_base08
+export DMENU_SB=$B_base01
+export DMENU_FN="Nouveau IBM:pixelsize=32"
+#export DMENU_FN="Glass TTY VT220:pixelsize=32"
+
+
+export PANEL_FIFO="$HOME/.topbarfifo"
+export PANEL_HEIGHT="16"
+#export PANEL_FONT_FAMILY="-*-terminus-medium-r-normal-*-12-*-*-*-c-*-*-1"
+export PANEL_FONT_FAMILY='-glenn-Terminus5-Medium-R-Normal--12-120-72-72-C-60-ISO8859-1'
+
+# for lemonbar panel script "topbar" and etc
+export COLOR_FOREGROUND=$B_base05
+export COLOR_BACKGROUND=$B_base00
+export COLOR_FOCUSED_MONITOR_FG=$B_base00
+export COLOR_FOCUSED_MONITOR_BG=$B_base09
+export COLOR_MONITOR_FG=$B_base09
+export COLOR_MONITOR_BG=$B_base00
+export COLOR_FOCUSED_OCCUPIED_FG=$B_base08
+export COLOR_FOCUSED_OCCUPIED_BG=$B_base03
+export COLOR_FOCUSED_FREE_FG=$B_base08
+export COLOR_FOCUSED_FREE_BG=$B_base00
+export COLOR_FOCUSED_URGENT_FG=$B_base06
+export COLOR_FOCUSED_URGENT_BG=$B_base0E
+export COLOR_OCCUPIED_FG=$B_base07
+export COLOR_OCCUPIED_BG=$B_base01
+export COLOR_FREE_FG=$B_base04
+export COLOR_FREE_BG=$B_base00
+export COLOR_URGENT_FG=$B_base06
+export COLOR_URGENT_BG=$B_base0E
+export COLOR_LAYOUT_FG=$B_base03
+export COLOR_LAYOUT_BG=$B_base00
+export COLOR_TITLE_FG=$B_base06
+export COLOR_TITLE_BG=$B_base00
+export COLOR_STATUS_FG=$B_base06
+export COLOR_STATUS_BG=$B_base00
+export COLOR_SYS_FG=$B_base06
+export COLOR_SYS_BG=$B_base00
+export COLOR_STATE_FG=$B_base07
+export COLOR_STATE_BG=$B_base00
+
+

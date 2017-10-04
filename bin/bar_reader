@@ -1,0 +1,22 @@
+#!/bin/sh
+
+FIFO=$HOME/bar.fifo
+LEMONBAR_ARGS="-d -p -n ignore"
+
+[ -p $FIFO ] || mkfifo $FIFO
+
+_read() {
+	while true; do
+		cat -u $FIFO # this should block until fifo is closed
+		echo -ne "FIFO WAS CLOSED!  "
+		echo -ne "FIFO WAS CLOSED!  "
+		echo -ne "FIFO WAS CLOSED!  "
+		echo -ne "FIFO WAS CLOSED!  "
+		echo -e "FIFO WAS CLOSED! \n"
+		sleep 3
+	done
+}
+
+_read | lemonbar -f '-glenn-Terminus5-Medium-R-Normal--12-120-72-72-C-60-ISO8859-1' $LEMONBAR_ARGS
+#_read | lemonbar -f 'Glass TTY VT220-9' $LEMONBAR_ARGS
+#_read | lemonbar -f 'Horta-8' $LEMONBAR_ARGS

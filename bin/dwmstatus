@@ -1,0 +1,152 @@
+#!/bin/sh
+
+#FONT='-artwiz-cure-medium-r-normal--11-110-75-75-p-90-iso8859-1'
+
+printglenn()
+{
+	echo -ne "\x02¥¦\x01"
+}
+
+
+
+getCpuload() {
+
+	LOAD=`cat /proc/loadavg | cut -d" " -f 1`
+
+    if [ ${LOAD/.*/} -gt 6 ]; then
+    echo -ne "\x03 $LOAD\x01"
+    elif [ ${LOAD/.*/} -gt 4 ]; then
+    echo -ne "\x05 $LOAD\x01"
+    elif [ ${LOAD/.*/} -gt 2 ]; then
+    echo -ne "\x04 $LOAD\x01"
+    elif [ ${LOAD/.*/} -gt 1 ]; then
+    echo -ne "\x06 $LOAD\x01"
+    else 
+    echo -ne "\x08 $LOAD\x01"
+    fi 
+}
+getTemp() {
+    CPU_TEMP=`sensors | grep -A 2 k10temp | grep temp1 | awk 'NR==1 {print $2}' FS=+ RS=°` # k10temp is for glenn's AMD desktop
+    if [ ${CPU_TEMP/.*/} -gt 40 ]; then				
+		echo -ne "\x03$CPU_TEMP\x01"
+    elif [ ${CPU_TEMP/.*/} -gt 30 ]; then				
+		echo -ne "\x02$CPU_TEMP\x01"
+    elif [ ${CPU_TEMP/.*/} -gt 20 ]; then				
+		echo -ne "\x04$CPU_TEMP\x01"
+    else
+		echo -ne "\x06$CPU_TEMP\x01"
+	fi
+}
+getFan() {
+		FAN=`sensors | grep fan1 | awk '{ print $2 }'`
+		echo -ne "\x07\x01$FAN"
+		echo -ne " rpm"
+}
+
+getMem() {
+    # %
+    MEM_USAGE_PERCENT=`free -om | awk '/Mem:/ {print int(($3 - $7 - $6) / $2  * 100)}'`
+    # Mb
+    MEM_USAGE_MB=`free -om | awk '/Mem:/ {print int($3 - $7 - $6)}'`
+    if [ $MEM_USAGE_PERCENT -gt 80 ]; then
+    		echo -ne "\x03$MEM_USAGE_PERCENT% $MEM_USAGE_MB MB\x01"
+    elif [ $MEM_USAGE_PERCENT -gt 60 ]; then
+    		echo -ne "\x05$MEM_USAGE_PERCENT% $MEM_USAGE_MB MB\x01"
+    elif [ $MEM_USAGE_PERCENT -gt 40 ]; then
+    		echo -ne "\x04$MEM_USAGE_PERCENT% $MEM_USAGE_MB MB\x01"
+    elif [ $MEM_USAGE_PERCENT -gt 30 ]; then
+    		echo -ne "\x06$MEM_USAGE_PERCENT% $MEM_USAGE_MB MB\x01"
+    else
+    		echo -ne "\x08$MEM_USAGE_PERCENT% $MEM_USAGE_MB MB\x01"
+    fi
+}
+
+getVolume() {
+    MIXER="Master"
+		VOLUME=`amixer sget $MIXER  | grep Mono\: | sed -e s/"  Mono: Playback [0-9]* \["// -e s/"\%.*"//`
+		if [ "`amixer -q | grep -A 4 Master | grep Mono | awk '{ print $6 }' | grep on | wc -l`" -gt 0 ]; then
+   			 if [ $VOLUME -lt 10 ]; then
+		   		 echo -ne "\x04£\x01"
+			 elif [ $VOLUME -lt 40 ]; then
+				 echo -ne "\x04¢\x01"
+			 elif [ $VOLUME -lt 80 ]; then
+		   		 echo -ne "\x05\x01"
+			 else
+		    		 echo -ne "\x02¡\x01"
+			 fi
+		else
+			   	 echo -ne " \x03¤\x01"
+    fi
+}
+getMpd() {
+
+		if [ "`mpc | grep playing | awk '{ print $2 }' | wc -l`" != 1 ]; then
+				echo -ne "\x04 Paused\x01" # paused
+    else
+				if [ `mpc | grep playing | awk '{ print $4 }' | sed 's/.\(.*\)/\1/' | sed 's/\(.*\)../\1/'` = 100 ]; then
+				echo -ne "\x06\x06 `mpc | head -n 1 |cut -c 1-200`"
+				mpc_time="`mpc | grep playing | awk '{ print $3 }'`"
+			  echo -ne " \x06[$mpc_time]"	
+		    else
+				echo -ne "\x06\x05 `mpc | head -n 1 |cut -c 1-200`"
+				mpc_time="`mpc | grep playing | awk '{ print $3 }'`"
+			  echo -ne " [$mpc_time] \x01"	
+				fi
+		fi
+}
+getDate() { 
+    date_format="%H:%M %A %d %B"
+		date_command=$(date +"$date_format")
+		time=$(date | awk '{ print $4 }' | sed 's/......\(.*\)/\1/')
+		if [ $time = "00" ]; then
+		echo -ne "\x06\x01 $date_command "
+    else
+		echo -ne "\x02 $date_command\x01"
+    fi
+}
+getBattery() {
+		
+		STATEFILE='/proc/acpi/battery/BAT0/state' # battery's state file
+    INFOFILE='/proc/acpi/battery/BAT0/info'   # battery's info file
+    # check if battery's charging
+    CHARG=`cat $STATEFILE | grep charging | awk '{ print $3 }'`;
+    # look up battery's data
+    BAT_FULL=`cat $INFOFILE|grep design|line|cut -d " " -f 11`;
+    RCAP=`cat $STATEFILE|grep remaining|cut -d " " -f 8`;
+ 
+    # calculate remaining power
+    RPERCT=`expr $RCAP \* 100`;
+    RPERC=`expr $RPERCT / $BAT_FULL`;
+ 
+ if   [[ $RPERC -lt 10 && $CHARG = "discharging" ]]; then
+		echo -ne  "\x07 \x01 $RPERC% "
+    send-notify Low Battery
+ elif [[ $RPERC -lt 30 && $CHARG = "discharging" ]]; then
+		echo -ne  "\x07\x01 $RPERC% "	
+ elif [[ $RPERC -lt 50 && $CHARG = "discharging" ]]; then
+		echo -ne  "\x07\x01 $RPERC% "	
+ elif [[ $RPERC -lt 60 && $CHARG = "discharging" ]]; then
+		echo -ne  "\x07\x01 $RPERC% "	
+ elif [[ $RPERC -lt 70 && $CHARG = "discharging" ]]; then
+		echo -ne  "\x07\x01 $RPERC% "	
+ elif [[ $RPERC -lt 80 && $CHARG = "discharging" ]]; then
+		echo -ne  "\x07\x01 $RPERC% "	
+ elif [[ $RPERC -lt 100 && $CHARG = "discharging" ]]; then
+		echo -ne  "\x07\x01 $RPERC% "	
+ elif [ $RPERC = 99 ]; then
+		echo -ne  "\x06\x01 100% "	
+ else
+ 		 echo -ne  "\x07\x01 $RPERC% "
+ fi
+}
+getMail() {
+    mail_count=`curl -s https://USER:PASS@mail.google.com/mail/feed/atom/all | grep -c "<title>"`
+    if [[ $mail_count -gt 1 ]]; then
+		echo -ne " \x03 $mail_count\x01" 
+	else
+		echo -ne " \x04\x01" 
+		
+   fi
+}
+
+xsetroot -name "$(getMpd)$(getVolume)$(getMail)$(getCpuload)$(getMem)$(getDate)" 

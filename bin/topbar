@@ -1,0 +1,9 @@
+#!/bin/sh
+
+while [ $(pgrep -cx barpipe) -gt 1 ] ; do
+	pkill -ox barpipe
+done
+
+killall -9 barpipe
+
+bspc subscribe report | barpipe &

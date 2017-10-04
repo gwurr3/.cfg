@@ -1,0 +1,14 @@
+#!/bin/sh
+
+PASSES=`gpg --use-agent --batch -d $HOME/notes/pass.gpg 2>/dev/null`
+
+NUMPASSES=`echo $PASSES | wc -l`
+
+#RESULT=$(echo -e "$PASSES" | dmenu -l $NUMPASSES)
+#RESULT=$(echo -e "$PASSES" | dmenu -p "Select a Password to be typed" -nb black -sb white -sf red -fn "Nouveau IBM" )
+RESULT=$(echo -e "$PASSES" | dmenu -p "Select a Password to be typed" -nb black -sb white -sf red -fn "Glass TTY VT220" )
+THEPASS=$(echo "$RESULT" | tr -d '\n' | cut -d'|' -f 2-)
+
+[ -n $THEPASS ] && xdotool type $THEPASS
+
+

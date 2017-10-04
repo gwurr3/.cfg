@@ -1,0 +1,59 @@
+# move windows around
+super + {left,down,up,right}
+      wmv {-20 0, 0 20, 0 -20, 20, 0} $(pfw)
+
+# resize windows
+super + alt + {left,down,up,right}
+      wrs {-20 0, 0 20, 0 -20, 20, 0} $(pfw)
+
+
+# cycle through windows
+alt {, + shift} + tab
+    vroum {next, prev}
+
+
+# add window to a group
+super + shift + {1,2,3,4,5}
+    groups.sh -c $(pfw); \
+    groups.sh -s {1,2,3,4,5} ${pfw}
+
+# toggle groups' visibility
+super + {1,2,3,4,5}
+    groups.sh -t {1,2,3,4,5}
+
+# remove window from all groups
+super + Backspace
+    groups.sh -c ${pfw}
+
+super + {j,k}
+	focus.sh {prev,next}
+
+## select windows using directions
+#alt + {left,down,up,right}
+#      focus {west, south, north, east} $(pfw)
+
+
+# move windows to corners
+super + {y,u,b,n,g}
+    corner {tl, tr, bl, br, md} $(pfw)
+
+
+# set window fullscreen
+super + x
+    fullscreen $(pfw)
+
+# spawn terminal
+super + Return
+	run_terminal
+
+# spawn scratchpad
+super + shift + s
+	run_scratchpad
+
+# run dmenu
+super + p
+	dmenu_run -i -p "Run command:"
+
+# move windows with the mouse:
+super + !button{1,3}
+    {wmv, wrs} -a %i %i $(pfw)

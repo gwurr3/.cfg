@@ -1,0 +1,35 @@
+#!/bin/sh
+
+LEMONBAR_ARGS="-d -n ignore -g x$PANEL_HEIGHT -f $PANEL_FONT_FAMILY -F $COLOR_FOREGROUND -B $COLOR_BACKGROUND"
+
+# this is not quite POSIX sh and doesnt work on some systems
+while [ $(pgrep -cx bottombar) -gt 1 ] ; do
+	pkill -ox -9 bottombar
+done
+
+case "$SHORTHOSTNAME" in
+	baldr)
+		CONFIGFILE="$HOME/.i3bars/baldr.conf"
+		;;
+	fourten)
+		CONFIGFILE="$HOME/.i3bars/fourten.conf"
+		;;
+	*)
+		echo "no config for this box in bottombar script\n" >&2
+		CONFIGFILE="$HOME/.i3bars/default.conf"
+		;;
+esac
+
+i=0
+
+i3status -c $CONFIGFILE | while :
+do
+	read BARLINE
+	FINALBAR=""
+	while [ $i -lt `xrandr -q | grep -o " connected" | wc -l` ] ; do
+		FINALBAR="$FINALBAR %{S${i}} $BARLINE"
+		i=`expr $i + 1`
+	done
+	i=0
+	echo -e "$FINALBAR"
+done | lemonbar -b $LEMONBAR_ARGS

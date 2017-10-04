@@ -1,0 +1,9 @@
+#!/bin/sh
+
+fetch_shit ()
+{
+	curl -sS http://winhelp2002.mvps.org/hosts.txt | dos2unix | awk '!/^#/ {print $2}' |egrep -v '^$|localhost' | tr '[A-Z]' '[a-z]' | sort -u |  sed 's/^/local-zone: \"/' | sed 's/$/\" static/'
+	curl -sS -L --compressed "http://pgl.yoyo.org/adservers/serverlist.php?hostformat=nohtml&showintro=0&mimetype=plaintext" | tr '[A-Z]' '[a-z]' | sort -u |  sed 's/^/local-zone: \"/' | sed 's/$/\" static/'
+}
+
+fetch_shit | sort -u

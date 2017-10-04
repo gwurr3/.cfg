@@ -1,0 +1,43 @@
+#!/bin/sh
+
+run_util() {
+	$@ >/dev/null 2>$HOME/utils.log &
+}
+
+run_bg() {
+	$@ >/dev/null 2>&1 &
+}
+
+#
+## Common shit
+#
+
+# sync clipboards
+run_util autocutsel -fork
+run_util autocutsel -selection PRIMARY -fork
+
+run_util xscreensaver -no-splash
+run_util xautolock -time 15 -locker 'xscreensaver-command --lock'
+
+run_util gpg-agent --daemon
+
+case "$SHORTHOSTNAME" in
+	sexbox)
+		#run_util phantomjs --ssl-protocol=any --ignore-ssl-errors=yes --webdriver=9134
+		run_bg asound firefox
+		#run_bg slack
+		run_util redshift -O 4300k
+		;;
+	baldr)
+		#run_bg /usr/bin/pidgin
+		run_bg ~/bin/kayako
+		run_bg slack
+		run_bg firefox
+		run_util redshift -O 4300k
+		run_util phantomjs --ssl-protocol=any --ignore-ssl-errors=yes --webdriver=9134
+		;;
+	fourten)
+		run_util redshift -O 4000K
+		;;
+esac
+

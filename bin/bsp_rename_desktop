@@ -1,0 +1,8 @@
+#!/bin/sh
+
+DESKTOP_NAME=`echo '' | dmenu -b -nf "$DMENU_NF" -nb "$DMENU_NB" -sf "$DMENU_SF" -sb "$DMENU_SB" -p 'Rename Desktop to:'`
+if [ -z $DESKTOP_NAME ]; then
+	exit 0
+fi
+ 
+bspc desktop -n "$DESKTOP_NAME"

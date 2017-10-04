@@ -1,0 +1,33 @@
+#!/bin/sh
+
+case "$1" in
+	next|prev|toggle)
+		mpc $1 > /dev/null
+		;;
+	up|down|mute)
+		MIXER=Master
+		MIXERCMD=amixer
+		case "$SHORTHOSTNAME" in
+			baldr)
+				MIXER=PCM
+				MIXERCMD=amixer
+				;;
+			*)
+				;;
+		esac
+		case "$1" in
+			up)
+				$MIXERCMD set $MIXER 2dB+ > /dev/null
+				;;
+			down)
+				$MIXERCMD set $MIXER 2dB- > /dev/null
+				;;
+			mute)
+				$MIXERCMD -- sset $MIXER toggle > /dev/null
+				;;
+		esac
+		;;
+	*)
+		echo "$0 : command not recognized '$1' " >&2
+		;;
+esac

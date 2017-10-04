@@ -1,0 +1,146 @@
+# set border width
+borderwidth 4
+
+# colors
+color activeborder   '#c3bec3'
+color inactiveborder '#585261'
+color menubg         '#37273a'
+color menufg         '#c3bec3'
+color font           '#c3bec3'
+color selfont        '#37273a'
+
+fontname "ProFont"
+
+gap 15 15 0 0
+
+ignore "ignore"
+
+# fuck you're slow
+moveamount 10
+
+sticky yes 
+
+snapdist 15
+
+# autogroups
+#autogroup 0 "xterm,scratchpad"
+autogroup 0 google-chrome-unstable
+autogroup 0 google-chrome-stable
+autogroup 0 google-chrome
+autogroup 0 firefox
+autogroup 0 luakit
+autogroup 0 Firefox
+autogroup 5 "KayakoDesktop.exe"
+autogroup 3 "xterm,IRC"
+autogroup 3 Pidgin
+autogroup 3 Hexchat
+autogroup 4 "slack"
+autogroup 4 "kicad"
+autogroup 4 "gimp"
+autogroup 2 "emacs"
+
+# menu
+command irc	"hexchat"
+#command lock    /usr/local/bin/slock
+#
+#command urxvt   /usr/local/bin/urxvtc
+#command firefox /usr/local/bin/firefox
+#command pidgin  /usr/local/bin/pidgin
+#command mumble  /usr/local/bin/mumble
+#command xlock   /usr/local/bin/slock
+
+#2016/12/01 - cwm(1) bind function changes : The configuration syntax for binding functions to keys and mouse buttons has changed, replacing the bind and mousebind keywords with bind-key, bind-mouse, unbind-key and unbind-mouse. 
+# binds
+bind-key 4S-Return 	"run_terminal"
+bind-key 4-p	"dmenu_run -i -p 'EXEC: ' -fn 'ProFont'"
+bind-key 4S-p	"enter_pass"
+
+bind-key 4-j	window-move-down
+bind-key 4-k	window-move-up
+bind-key 4-h	window-move-left
+bind-key 4-l	window-move-right
+
+bind-key 4S-j	window-move-down-big
+bind-key 4S-k	window-move-up-big
+bind-key 4S-h	window-move-left-big
+bind-key 4S-l	window-move-right-big
+
+bind-key 4C-j	window-resize-down
+bind-key 4C-k	window-resize-up
+bind-key 4C-h	window-resize-left
+bind-key 4C-l	window-resize-right
+
+bind-key 4CS-j	window-resize-down-big
+bind-key 4CS-k	window-resize-up-big
+bind-key 4CS-h	window-resize-left-big
+bind-key 4CS-l	window-resize-right-big
+
+bind-key 4-Down	window-lower
+bind-key 4-Up	window-raise
+bind-key 4-Left	window-vtile
+bind-key 4-Right	window-htile
+bind-key 4-tab	window-cycleingroup
+bind-key 4-m	window-maximize
+bind-key 4-f	window-fullscreen
+
+bind-key C-Return	"xdotool click 1"
+bind-key CM-Return	"xdotool click 3"
+#bind M-Up	"xdotool click 4"
+#bind M-Down	"xdotool click 5"
+unbind-key M-Up
+unbind-key M-Down
+unbind-key M-Left
+unbind-key M-Right
+
+bind-key 4S-period	window-cyclegroup
+bind-key 4S-comma	window-rcyclegroup
+bind-key 4-period	window-cycleingroup
+bind-key 4-comma	window-rcycleingroup
+
+bind-key 4-slash	menu-window
+bind-key 4S-slash	menu-group
+
+
+bind-mouse M-3	window-resize
+bind-mouse 4-3	window-resize
+bind-mouse 4-2	window-hide
+bind-mouse 4-1	window-move
+bind-mouse M-2	window-lower
+
+bind-mouse 4S-f	window-freeze
+
+bind-key 4S-s	"xterm -ls -fa 'ProFont' -fs 10 -class scratchpad "
+
+# sorta-like dwm shit
+bind-key 4-1	group-only-1 
+bind-key 4-2	group-only-2 
+bind-key 4-3	group-only-3 
+bind-key 4-4	group-only-4 
+bind-key 4-5	group-only-5 
+bind-key 4-6	group-only-6 
+bind-key 4-7	group-only-7 
+bind-key 4-8	group-only-8 
+bind-key 4-9	group-only-9 
+bind-key 4-0	nogroup 
+
+bind-key 4C-1	group-toggle-1 
+bind-key 4C-2	group-toggle-2 
+bind-key 4C-3	group-toggle-3 
+bind-key 4C-4	group-toggle-4 
+bind-key 4C-5	group-toggle-5 
+bind-key 4C-6	group-toggle-6 
+bind-key 4C-7	group-toggle-7 
+bind-key 4C-8	group-toggle-8 
+bind-key 4C-9	group-toggle-9 
+
+bind-key 4S-1	window-movetogroup-1 
+bind-key 4S-2	window-movetogroup-2 
+bind-key 4S-3	window-movetogroup-3 
+bind-key 4S-4	window-movetogroup-4 
+bind-key 4S-5	window-movetogroup-5 
+bind-key 4S-6	window-movetogroup-6 
+bind-key 4S-7	window-movetogroup-7 
+bind-key 4S-8	window-movetogroup-8 
+bind-key 4S-9	window-movetogroup-9
+
+bind-key 4S-c	window-delete

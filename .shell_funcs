@@ -1,0 +1,114 @@
+# vim: syntax=sh:
+#  _____ _   _ _   _  ____ _____ ___ ___  _   _ ____
+# |  ___| | | | \ | |/ ___|_   _|_ _/ _ \| \ | / ___|
+# | |_  | | | |  \| | |     | |  | | | | |  \| \___ \
+# |  _| | |_| | |\  | |___  | |  | | |_| | |\  |___) |
+# |_|    \___/|_| \_|\____| |_| |___\___/|_| \_|____/
+#
+
+
+ssh-blast() {
+
+	local sshretval
+
+	while [ "$sshretval" != "0" ] ; do
+		ssh -o "ConnectTimeout=1" \
+		-o "BatchMode=yes" \
+		-o "StrictHostKeyChecking=no" \
+		-o "UserKnownHostsFile=/dev/null"\
+		-o "PreferredAuthentications=publickey"\
+		$@
+
+		let sshretval="$?"
+	done
+}
+
+
+for i in sha512 sha256 sha1 md5; do
+	eval "ssl-cert-${i}() {
+		openssl x509 -noout -fingerprint -${i} -in \$1 
+	}"
+done; unset i
+
+ssl-cert-fingerprints() {
+	local i
+	if [[ -z $1 ]] ; then 
+		printf 'usage: ssl-cert-fingerprints <file>\n'
+		return 1
+	fi
+	for i in sha512 sha256 sha1 md5 ; do
+		ssl-cert-$i $1;
+	done
+}
+
+ssl-cert-info() {
+	if [[ -z $1 ]] ; then 
+		printf 'usage: ssl-cert-info <file>\n'
+		return 1
+	fi
+	openssl x509 -noout -text -in $1
+	ssl-cert-fingerprints $1
+}
+
+
+set_title () {
+	if [ "$0" = "bash" ] || [ "$0" = "zsh" ] ; then
+		echo -en "\033]0;${@}\007"
+	else
+		echo -n "\033]0;${@}\007"
+	fi
+}
+
+
+cdt() {
+	cd "$(mktemp -d)"
+	pwd
+}
+
+# contains(string, substring)
+#
+# Returns 0 if the specified string contains the specified substring,
+# otherwise returns 1.
+contains() {
+	string="$1"
+	substring="$2"
+	if test "${string#*$substring}" != "$string"
+	then
+		return 0    # $substring is in $string
+	else
+		return 1    # $substring is not in $string
+	fi
+}
+
+
+
+# note taking
+n() {
+	$EDITOR ~/notes/"$*".txt
+}
+
+nls() {
+	ls -c ~/notes/ | grep "$*"
+}
+
+
+list-fonts() {
+	fc-scan --format "-%{foundry}-%{family}\n"  `pwd`
+}
+
+# this is primarily for daemons and programs that get started in xinitrc
+run_util() {
+	$@ >/dev/null 2>$HOME/utils.log &
+}
+
+run_bg() {
+	$@ >/dev/null 2>&1 &
+}
+
+genpass() {
+	tr -cd '[:alnum:]' < /dev/urandom | fold -w16 | head -n1
+}
+
+ps_memavg() {
+	 ps -ylC $1 --sort:rss | awk '{sum+=$8; ++n} END {print "Total Memory = "sum/1024" MB ("n" procs)";print "Avg per process = "sum/n/1024" MB"}'
+}

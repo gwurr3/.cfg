@@ -1,0 +1,7 @@
+#!/bin/sh
+
+
+lynx -useragent="Mozilla/5.0 (Windows NT x.y; Win64; x64; rv:10.0) Gecko/20100101 Firefox/10.0" -dump -image_links $1 |
+	grep -i '\. https\?://.*\.\(gif\|jpg\|png\|jpeg\|bmp\|tiff\)$' |
+	cut -d . -f 2- |
+	cut -d ' ' -f 2-

@@ -1,0 +1,182 @@
+#!/usr/bin/env perl
+#
+use Env qw(PATH HOME TERM);
+my ($linux, $openbsd, $LIBS, $CFLAGS, $INC);
+my $cfiledata;
+my $cfilepath;
+
+BEGIN {
+		$linux=$openbsd=0;
+		$linux=1 if $^O eq "linux";
+		$openbsd=1 if $^O eq "openbsd";
+		
+		if($openbsd) {
+				$LIBS = "-L/usr/X11R6/lib -lX11";
+				$INC = "-I/usr/X11R6/include";
+				$CFLAGS = "-DOBSDYES";
+		} elsif ($linux) {
+				print "DETECTED LINUX\n";
+
+				$LIBS = "-lX11 -lasound";
+				$CFLAGS ='-DLINUXYES';
+		} else {
+				$LIBS = "-lX11";
+		}
+
+		$cfilepath = $HOME . '/bin/.bar_writer_funcs.c';
+		open(my $fh, '<', $cfilepath ) or die "cant open $cfilepath";
+		{
+				local $/;
+				$cfiledata = <$fh>;
+		}
+		close($fh);
+
+}
+
+use Inline C => $cfiledata =>
+		LIBS => "$LIBS",
+		INC => "$INC",
+		CCFLAGSEX => "$CFLAGS";
+
+
+
+
+use Modern::Perl;
+use strict;
+use warnings;
+use POSIX ();
+use IO::Handle;
+use Proc::Daemon;
+#use Time::HiRes qw( usleep );
+
+
+my $continue = 1;
+$SIG{TERM} = sub { $continue = 0 };
+
+my $NUM_MONITORS = `xrandr -q | grep -o " connected" | wc -l`;
+chomp $NUM_MONITORS;
+my $HOSTNAME = `hostname -s`;
+chomp $HOSTNAME;
+
+my ($sexbox, $fourten, $baldr);
+$sexbox=$fourten=$baldr=0;
+$sexbox=1 if $HOSTNAME eq "sexbox";
+$fourten=1 if $HOSTNAME eq "fourten";
+$baldr=1 if $HOSTNAME eq "baldr";
+
+my $FIFO=$HOME . '/bar.fifo';
+my $LOGFILE=$HOME . '/bar.log';
+my $PIDFILE=$HOME . '/bar.pid';
+
+# lemonbar reset colors
+my $RESET='%{F-}%{B-}%{U-}';
+# other lemonbar shit
+my $RIGHT='%{r}';
+my $LEFT='%{l}';
+my $CENTER='%{c}';
+
+
+
+#my $ddcmd = 'dd';
+#$ddcmd .= ' if=';
+#$ddcmd .= $FIFO;
+#$ddcmd .= ' iflag=nonblock of=/dev/null';
+#$ddcmd .= ' > /dev/null 2>&1';
+#
+#
+#if (-p $FIFO ) {
+#	system($ddcmd);
+#} else {
+#	system("mkfifo", $FIFO);
+#}
+#
+-p $FIFO || system("mkfifo", $FIFO);
+
+my $pid = Proc::Daemon::Init( {
+		work_dir		 => $HOME,
+		child_STDOUT => $LOGFILE,
+		child_STDERR => $LOGFILE,
+		pid_file => $PIDFILE,
+	});
+
+
+if ($pid > 0) {
+	print "Forked child $pid \n";
+	exit;
+} elsif ($pid == 0) {
+
+	open (FIFO, "> $FIFO") || die "can't write $FIFO: $!";
+	FIFO->autoflush(1);
+
+	my $BARLINE= "";
+	my $FINALBAR = "";
+	my $i = 0;
+	my $ticks = 1;
+	my $batval ;
+	my $cputemp;
+	my $load ;
+	my $vol ;
+
+	while ($continue) {
+		# some stuff we update less frequently
+			if (not $ticks % 5) {
+					$batval = get_batt_percent_openbsd() if $fourten and defined(&get_batt_percent_openbsd);
+					$cputemp = get_cpu_temp_thinkpad() if $fourten and defined(&get_cpu_temp_thinkpad);
+
+					$vol = get_vol_alsa("PCM") if $linux and $baldr and defined(&get_vol_alsa);
+					$load = get_load();
+		}
+
+		$BARLINE="";
+		#$BARLINE = $CENTER . getfocusedwindowname() . $RIGHT . "Batt:". $batval . '%	 CPU: ' . $cputemp . 'C	 load:' . $load . '	 ' . date_line() . $RESET ;
+		$BARLINE .= $CENTER ;
+		$BARLINE .= getfocusedwindowname() ;
+		$BARLINE .= $RIGHT ;
+		if ($vol) {
+				$BARLINE .= 'Vol:' . $vol . '% ';
+		}
+		if ($batval) {
+			$BARLINE .= 'Batt:' . $batval . '% ';
+		}
+		if ($cputemp) {
+			$BARLINE .= "CPU: $cputemp" . 'C ';
+		}
+		$BARLINE .= "load: $load ";
+		$BARLINE .= date_line();
+		$BARLINE .= $RESET ;
+
+		if ($NUM_MONITORS > 1) {
+			$FINALBAR="";
+			while ($i < $NUM_MONITORS ) {
+				$FINALBAR .='%{S' . $i . '} ' . $BARLINE . ' ' ;
+				$i++;
+			}
+			print FIFO "$FINALBAR";
+			print FIFO "\n";
+		} else {
+			print FIFO "$BARLINE";
+			print FIFO "\n";
+		}
+
+		#usleep(500000);
+		sleep 1;
+		$ticks++;
+		if ($ticks > 999999 ) {
+			# so we don't overflow anything
+			$ticks = 1;
+		}
+		$i = 0;
+	}
+
+
+	close FIFO;
+
+	sleep 2;
+
+}
+
+
+sub date_line {
+	my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime();
+	return sprintf("%s-%s-%02d:%02d:%02d", $mon, $mday, $hour, $min, $sec);
+}
