@@ -70,8 +70,8 @@ case "$UNAME" in
 esac
 
 alias insecssh='ssh -o "StrictHostKeyChecking=no" -o "UserKnownHostsFile=/dev/null" -o "PreferredAuthentications=keyboard-interactive"'
-alias rsh='ssh -F ~/.ssh/proxyconfig -l root -p2222'
-alias rsftp='sftp -o port=2222 -F ~/.ssh/proxyconfig'
+alias tunnelssh='ssh -F ~/.ssh/proxyconfig'
+alias tunnelsftp='sftp -F ~/.ssh/proxyconfig'
 alias startx='startx -- -listen tcp -dpi 100'
 which gpg >/dev/null 2>&1 ||  alias gpg='gpg2'
 alias tmux='tmux -2'
