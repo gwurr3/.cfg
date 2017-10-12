@@ -1,4 +1,4 @@
-122
+143
 Cousine-Bold.ttf -monotype-cousine-bold-r-normal--0-0-0-0-m-0-adobe-standard
 Cousine-Bold.ttf -monotype-cousine-bold-r-normal--0-0-0-0-m-0-ascii-0
 Cousine-Bold.ttf -monotype-cousine-bold-r-normal--0-0-0-0-m-0-ibm-cp437
@@ -121,3 +121,24 @@ Nouveau_IBM_Stretch.ttf -misc-nouveau ibm stretch-medium-r-normal--0-0-0-0-m-0-i
 Nouveau_IBM_Stretch.ttf -misc-nouveau ibm stretch-medium-r-normal--0-0-0-0-m-0-iso8859-1
 Nouveau_IBM_Stretch.ttf -misc-nouveau ibm stretch-medium-r-normal--0-0-0-0-m-0-iso8859-15
 Nouveau_IBM_Stretch.ttf -misc-nouveau ibm stretch-medium-r-normal--0-0-0-0-m-0-microsoft-cp1252
+ibmplexmono-regular.ttf -ibm-ibm plex mono-medium-r-normal--0-0-0-0-m-0-iso10646-1
+ibmplexmono-regular.ttf -ibm-ibm plex mono-medium-r-normal--0-0-0-0-m-0-iso8859-10
+ibmplexmono-regular.ttf -ibm-ibm plex mono-medium-r-normal--0-0-0-0-m-0-iso8859-15
+ibmplexmono-regular.ttf -ibm-ibm plex mono-medium-r-normal--0-0-0-0-m-0-iso8859-16
+ibmplexsans-bold.ttf -ibm-ibm plex sans-bold-r-normal--0-0-0-0-p-0-iso10646-1
+ibmplexsans-bold.ttf -ibm-ibm plex sans-bold-r-normal--0-0-0-0-p-0-iso8859-10
+ibmplexsans-bold.ttf -ibm-ibm plex sans-bold-r-normal--0-0-0-0-p-0-iso8859-15
+ibmplexsans-bold.ttf -ibm-ibm plex sans-bold-r-normal--0-0-0-0-p-0-iso8859-16
+ibmplexsans-regular.ttf -ibm-ibm plex sans-medium-r-normal--0-0-0-0-p-0-iso10646-1
+ibmplexsans-regular.ttf -ibm-ibm plex sans-medium-r-normal--0-0-0-0-p-0-iso8859-10
+ibmplexsans-regular.ttf -ibm-ibm plex sans-medium-r-normal--0-0-0-0-p-0-iso8859-15
+ibmplexsans-regular.ttf -ibm-ibm plex sans-medium-r-normal--0-0-0-0-p-0-iso8859-16
+ibmplexsans-regularitalic.ttf -ibm-ibm plex sans-medium-i-normal--0-0-0-0-p-0-iso10646-1
+ibmplexsans-regularitalic.ttf -ibm-ibm plex sans-medium-i-normal--0-0-0-0-p-0-iso8859-10
+ibmplexsans-regularitalic.ttf -ibm-ibm plex sans-medium-i-normal--0-0-0-0-p-0-iso8859-15
+ibmplexsans-regularitalic.ttf -ibm-ibm plex sans-medium-i-normal--0-0-0-0-p-0-iso8859-16
+ibmplexsans-semibold.ttf -ibm-ibm plex sans semibold-bold-r-normal--0-0-0-0-p-0-iso10646-1
+ibmplexsans-semibold.ttf -ibm-ibm plex sans semibold-bold-r-normal--0-0-0-0-p-0-iso8859-10
+ibmplexsans-semibold.ttf -ibm-ibm plex sans semibold-bold-r-normal--0-0-0-0-p-0-iso8859-15
+ibmplexsans-semibold.ttf -ibm-ibm plex sans semibold-bold-r-normal--0-0-0-0-p-0-iso8859-16
+icons-ibm-v10.ttf -misc-icons ibm v10-medium-r-normal--0-0-0-0-p-0-iso10646-1

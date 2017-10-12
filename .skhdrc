@@ -30,6 +30,7 @@
 #                                  an EOL character signifies the end of the bind.
 
 
-cmd - return : osascript ~/bin/mac_new_term
+cmd - return : osascript ~/bin/.osa/run_term.scpt
+lshift + lcmd - f : osascript ~/bin/.osa/run_finder.scpt
 
 
