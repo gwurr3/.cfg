@@ -108,22 +108,6 @@ export PATH HOME TERM EDITOR HISTFILE LC_CTYPE LANG PS1 PS2 PS3 PS4 PAGER BROWSE
 test "$0" != "zsh" && set -o emacs
 umask 027
 
-#######---------------- SSH KEYS
-if contains "$IS_THIS_A_MAC" "FALSE" ; then 
-	id1=$HOME/.ssh/identity
-	id2=$HOME/.ssh/id_dsa
-	id3=$HOME/.ssh/id_rsa
-	id4=$HOME/.ssh/id_ecdsa
-	id5=$HOME/.ssh/id_ed25519
-
-	if [ -z "$SSH_AGENT_PID" ]; then
-		if [ -x /usr/bin/ssh-agent ] && [ -f $id1 -o -f $id2 -o -f $id3 -o -f $id4 -o -f $id5 ]; then
-			eval `ssh-agent -s`
-			ssh-add < /dev/null
-		fi
-	fi
-fi
-
 #######---------------- PERLBREW
 PERLBREWFILE=$HOME/perl5/perlbrew/etc/bashrc
 [[ -e "$PERLBREWFILE" ]] && . $PERLBREWFILE
