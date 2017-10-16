@@ -112,3 +112,20 @@ genpass() {
 ps_memavg() {
 	 ps -ylC $1 --sort:rss | awk '{sum+=$8; ++n} END {print "Total Memory = "sum/1024" MB ("n" procs)";print "Avg per process = "sum/n/1024" MB"}'
 }
+
+tmux_escape_printf() {
+        printf "\033Ptmux;\033%s\033\\" $@
+}
+
+iterm2_set_badge() {
+	if contains "$IS_THIS_ITERM2" "TRUE" ; then
+		printf "\033]1337;SetBadgeFormat=%s\a" $(echo -n "$@" | base64)
+		return 0
+	elif contains "$IS_THIS_ITERM2" "TMUX" ; then
+		tmux_escape_printf `printf "\033]1337;SetBadgeFormat=%s\a" $(echo -n "$@" | base64)`
+		return 0
+	else
+		return 1
+	fi
+}
+

@@ -93,6 +93,10 @@ if contains "$0" "bash" ; then
 			alias tmux='tmux -CC'
 			#test -e "${HOME}/.iterm2/it2attention" && ${HOME}/.iterm2/it2attention fireworks
 			test -e "${HOME}/.iterm2/it2attention" && ${HOME}/.iterm2/it2attention start
+		elif test -n $ITERM_SHELL_INTEGRATION_INSTALLED && test -n $TMUX ; then
+			IS_THIS_ITERM2=TMUX
+			alias tmux='tmux'
+			test -e "${HOME}/.iterm2/it2attention" && ${HOME}/.iterm2/it2attention start
 		else
 			alias tmux='tmux'
 		fi
@@ -125,7 +129,11 @@ PERLBREWFILE=$HOME/perl5/perlbrew/etc/bashrc
 [[ -e "$PERLBREWFILE" ]] && . $PERLBREWFILE
 
 #######---------------- X11/wm stuff
-
 . ~/.wm_vars
+
+#######---------------- Load local profile if exists
+if test -e "${HOME}/.profile.local" ; then
+	. ${HOME}/.profile.local
+fi
 
 # EOF
