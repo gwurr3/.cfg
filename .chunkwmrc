@@ -30,16 +30,35 @@ chunkc set global_desktop_offset_left    50
 chunkc set global_desktop_offset_right   50
 chunkc set global_desktop_offset_gap     25
 
-chunkc set 2_desktop_offset_top          190
-chunkc set 2_desktop_offset_bottom       190
-chunkc set 2_desktop_offset_left         190
-chunkc set 2_desktop_offset_right        190
-chunkc set 2_desktop_offset_gap          35
-
-chunkc set 3_desktop_offset_top          190
-chunkc set 3_desktop_offset_bottom       190
-chunkc set 3_desktop_offset_left         190
-chunkc set 3_desktop_offset_right        190
+case `hostname -s` in
+	sexbox)
+		chunkc set 2_desktop_offset_top          190
+		chunkc set 2_desktop_offset_bottom       190
+		chunkc set 2_desktop_offset_left         190
+		chunkc set 2_desktop_offset_right        190
+		chunkc set 2_desktop_offset_gap          35
+		chunkc set 3_desktop_offset_top          190
+		chunkc set 3_desktop_offset_bottom       190
+		chunkc set 3_desktop_offset_left         190
+		chunkc set 3_desktop_offset_right        190
+		;;
+	baldr)
+		chunkc set 2_desktop_mode                monocle
+		chunkc set 3_desktop_mode                bsp
+		chunkc set 2_desktop_offset_top          10
+		chunkc set 2_desktop_offset_bottom       10
+		chunkc set 2_desktop_offset_left         10
+		chunkc set 2_desktop_offset_right        10
+		chunkc set 2_desktop_offset_gap          5
+		chunkc set 3_desktop_offset_top          25
+		chunkc set 3_desktop_offset_bottom       25
+		chunkc set 3_desktop_offset_left         25
+		chunkc set 3_desktop_offset_right        25
+		chunkc set 3_desktop_offset_gap          40
+		;;
+	*)
+		;;
+esac
 
 chunkc set desktop_padding_step_size     10.0
 chunkc set desktop_gap_step_size         5.0
