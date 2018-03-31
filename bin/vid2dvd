@@ -23,7 +23,8 @@ fi
 
 # Check for dependencies
 missing=0
-dependencies=( "ffmpeg" "dvdauthor" "genisoimage" )
+#dependencies=( "ffmpeg" "dvdauthor" "genisoimage" )
+dependencies=( "ffmpeg" "dvdauthor" "mkisofs" )
 for command in ${dependencies[@]}
 do
     if ! command -v $command &>/dev/null
@@ -107,8 +108,9 @@ fi
 
 emphasise "Creating ISO image"
 
-#genisoimage -dvd-video -o dvd.iso dvd/
-genisoimage -dvd-video -udf -o dvd.iso dvd/
+##genisoimage -dvd-video -o dvd.iso dvd/
+#genisoimage -dvd-video -udf -o dvd.iso dvd/
+mkisofs -dvd-video -udf -o dvd.iso dvd/
 
 if [ $? != 0 ]
 then
