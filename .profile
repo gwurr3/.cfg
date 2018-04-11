@@ -79,6 +79,9 @@ if contains "$IS_THIS_A_MAC" "TRUE" ; then
 	alias ic='cd ~/Library/Mobile\ Documents/com~apple~CloudDocs'
 	alias icloud='cd ~/Library/Mobile\ Documents/com~apple~CloudDocs'
 fi
+if test -x "$(command -v nvim)" ; then
+	alias vim='nvim'
+fi
 
 alias dotfiles='git --git-dir=$HOME/.cfg/ --work-tree=$HOME' # this is for the git repo that this file is a part of
 alias dotfiles-update='dotfiles status && dotfiles pull && dotfiles submodule init && dotfiles submodule update && dotfiles submodule status && dotfiles status'
