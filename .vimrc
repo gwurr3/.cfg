@@ -190,6 +190,9 @@ vmap  <expr>  D        DVB_Duplicate()
 " some plugin stuff
 "
 
+" ignore old vim warning for vim-go
+let g:go_version_warning = 0
+
 " easymotion
 let g:EasyMotion_do_mapping = 0 " Disable default mappings
 
