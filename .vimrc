@@ -79,6 +79,7 @@ exec "set listchars=tab:\uBB\uBB,trail:\uB7,nbsp:~"
 noremap <F4> :set list!<CR>
 
 noremap <F5> :set rnu!<CR> " relative line numbering
+noremap <F6> :setlocal spell! spelllang=en_us<CR> " spell checking
 
 " F3 toggles paste mode
 set pastetoggle=<F3>
