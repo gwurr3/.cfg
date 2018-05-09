@@ -79,6 +79,7 @@ exec "set listchars=tab:\uBB\uBB,trail:\uB7,nbsp:~"
 noremap <F4> :set list!<CR>
 
 noremap <F5> :set rnu!<CR> " relative line numbering
+noremap <F6> :setlocal spell! spelllang=en_us<CR> " spell checking
 
 " F3 toggles paste mode
 set pastetoggle=<F3>
@@ -189,6 +190,9 @@ vmap  <expr>  D        DVB_Duplicate()
 
 " some plugin stuff
 "
+
+" ignore old vim warning for vim-go
+let g:go_version_warning = 0
 
 " easymotion
 let g:EasyMotion_do_mapping = 0 " Disable default mappings
