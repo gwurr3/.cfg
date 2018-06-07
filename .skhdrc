@@ -31,6 +31,7 @@
 
 
 cmd - return : osascript ~/bin/.osa/run_term.scpt
+lshift + lcmd - return : osascript ~/bin/.osa/run_oterm.scpt
 lshift + lcmd - f : osascript ~/bin/.osa/run_finder.scpt
 
 # close focused window
