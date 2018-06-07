@@ -86,8 +86,8 @@ fi
 alias dotfiles='git --git-dir=$HOME/.cfg/ --work-tree=$HOME' # this is for the git repo that this file is a part of
 alias dotfiles-update='dotfiles status && dotfiles pull && dotfiles submodule init && dotfiles submodule update && dotfiles submodule status && dotfiles status'
 
-#######---------------- iterm2 integrations if shell is bash
-if contains "$0" "bash" ; then 
+#######---------------- iterm2 integrations if shell is bash and if term not Cathode
+if contains "$0" "bash" && ! contains "$TERMKIT_HOST_APP" "Cathode" ; then 
 	#test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
 	if test -e "${HOME}/.iterm2_shell_integration.bash" ; then
 		source "${HOME}/.iterm2_shell_integration.bash"
