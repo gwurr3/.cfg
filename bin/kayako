@@ -1,4 +1,4 @@
 #!/bin/sh
 killall KayakoDesktop.exe
 killall -9 KayakoDesktop.exe
- WINEARCH=win32 WINEPREFIX=~/.wine_kayako wine ~/.wine_kayako/drive_c/Program\ Files/Kayako/Desktop/KayakoDesktop.exe &> /dev/null
+ WINEARCH=win32 WINEPREFIX=~/.wine_kayako wine ~/.wine_kayako/drive_c/Program\ Files/Kayako/Desktop/KayakoDesktop.exe &> /dev/null &
