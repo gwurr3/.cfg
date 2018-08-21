@@ -14,6 +14,9 @@ case "$SHORTHOSTNAME" in
 	fourten)
 		CONFIGFILE="$HOME/.i3bars/fourten.conf"
 		;;
+	thor)
+		CONFIGFILE="$HOME/.i3bars/thor.conf"
+		;;
 	*)
 		echo "no config for this box in bottombar script\n" >&2
 		CONFIGFILE="$HOME/.i3bars/default.conf"

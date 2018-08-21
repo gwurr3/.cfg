@@ -28,6 +28,10 @@ case "$SHORTHOSTNAME" in
 		#run_bg slack
 		run_util redshift -O 4300k
 		;;
+	thor)
+		run_bg asound firefox
+		run_util redshift -O 4300k
+		;;
 	baldr)
 		#run_bg /usr/bin/pidgin
 		run_bg ~/bin/kayako

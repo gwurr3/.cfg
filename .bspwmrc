@@ -31,6 +31,17 @@ else
 			bspc monitor RIGHT -d misc2 WEB2 WEB1
 			bspc monitor BOTH -d BIG
 			;;
+		thor)
+			bspc config ignore_ewmh_focus true
+			bspc monitor DVI-D-0 --rename RIGHT
+			bspc monitor DVI-D-1 --rename MIDDLE
+			bspc monitor DisplayPort-0 --rename LEFT
+			bspc wm --add-monitor ALL 3648x1280+0+0
+			bspc monitor MIDDLE -d T1 T2 T3
+			bspc monitor LEFT -d misc IRC1 IRC2
+			bspc monitor RIGHT -d misc2 WEB2 WEB1
+			bspc monitor ALL -d BIG
+			;;
 		fourten)
 			bspc monitor LVDS1 --rename MAIN
 			bspc monitor MAIN -d I II IRC1 IRC2 K misc misc2 WEB2 WEB1
@@ -90,6 +101,9 @@ case "$SHORTHOSTNAME" in
 		bspc config -m topright top_padding 36
 		bspc config -m topleft top_padding 36
 		# dont want gaps on 4K
+		bspc config -d BIG window_gap 0
+		;;
+	thor)
 		bspc config -d BIG window_gap 0
 		;;
 	*)
