@@ -34,6 +34,9 @@ syntax enable
 set background=light	
 "colorscheme base16-eighties
 "let base16colorspace=256
+"
+" swap BG light/dark
+map <Leader>bg :let &background = ( &background == "dark"? "light" : "dark" )<CR>
 
 
 " Suffixes that get lower priority when doing tab completion for filenames.
@@ -50,6 +53,8 @@ endif
 if has('mouse')
   set mouse=a
 endif
+" actually, I don't really like mouse support
+set mouse=""
 
 " Switch syntax highlighting on, when the terminal has colors
 " Also switch on highlighting the last used search pattern.

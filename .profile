@@ -52,7 +52,7 @@ esac
 #######---------------- ALIASES
 
 case "$UNAME" in
-	Linux)
+	Linux|SunOS)
 		alias ll="ls -la --color=auto"
 		;;
 	FreeBSD|Darwin)
