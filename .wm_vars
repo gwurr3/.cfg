@@ -50,6 +50,7 @@ export AUTOSTARTCHECKFILE="$HOME/.autostartranfile"
 export DMENU_NF=$B_base05
 export DMENU_NB=$B_base00
 export DMENU_SF=$B_base08
+export DMENU_SF2=$B_base0E
 export DMENU_SB=$B_base01
 export DMENU_FN="Nouveau IBM:pixelsize=32"
 #export DMENU_FN="Glass TTY VT220:pixelsize=32"

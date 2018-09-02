@@ -20,6 +20,7 @@ run_util xscreensaver -no-splash
 run_util xautolock -time 15 -locker 'xscreensaver-command --lock'
 
 run_util gpg-agent --daemon
+run_util ssh-agent
 
 case "$SHORTHOSTNAME" in
 	sexbox)

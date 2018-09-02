@@ -48,6 +48,7 @@ case "$UNAME" in
 		IS_THIS_A_MAC=FALSE
 		;;
 esac
+RANGER_LOAD_DEFAULT_RC=FALSE
 
 #######---------------- ALIASES
 
@@ -83,6 +84,9 @@ if test -x "$(command -v nvim)" ; then
 	alias vim='nvim'
 fi
 
+alias encrypt='gpg --use-agent -c'
+alias decrypt='gpg --use-agent --batch -d'
+
 alias dotfiles='git --git-dir=$HOME/.cfg/ --work-tree=$HOME' # this is for the git repo that this file is a part of
 alias dotfiles-update='dotfiles status && dotfiles pull && dotfiles submodule init && dotfiles submodule update && dotfiles submodule status && dotfiles status'
 
@@ -107,7 +111,7 @@ if contains "$0" "bash" && ! contains "$TERMKIT_HOST_APP" "Cathode" ; then
 fi
 
 #######---------------- EXPORTS AND SHELL OPTS
-export PATH HOME TERM EDITOR HISTFILE LC_CTYPE LANG PS1 PS2 PS3 PS4 PAGER BROWSER CLICOLOR VISUAL UNAME XDG_CONFIG_HOME SHORTHOSTNAME IS_THIS_A_MAC IS_THIS_ITERM2
+export PATH HOME TERM EDITOR HISTFILE LC_CTYPE LANG PS1 PS2 PS3 PS4 PAGER BROWSER CLICOLOR VISUAL UNAME XDG_CONFIG_HOME SHORTHOSTNAME IS_THIS_A_MAC IS_THIS_ITERM2 RANGER_LOAD_DEFAULT_RC
 test "$0" != "zsh" && set -o emacs
 umask 027
 
