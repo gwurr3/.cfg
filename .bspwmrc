@@ -36,7 +36,7 @@ else
 			bspc monitor DVI-D-0 --rename RIGHT
 			bspc monitor DVI-D-1 --rename MIDDLE
 			bspc monitor DisplayPort-0 --rename LEFT
-			bspc wm --add-monitor ALL 3648x1280+0+0
+			bspc wm --add-monitor ALL 3968x1280+0+0
 			bspc monitor MIDDLE -d T1 T2 T3
 			bspc monitor LEFT -d misc IRC1 IRC2
 			bspc monitor RIGHT -d misc2 WEB2 WEB1

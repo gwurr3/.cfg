@@ -91,7 +91,7 @@ case "$SHORTHOSTNAME" in
 	thor)
 		[[ $(xrandr | grep 'DVI-D-1 connected') != "" ]] && xrandr --output DVI-D-1 --mode 1280x1024 --rotate left --left-of DVI-D-0
 		[[ $(xrandr | grep 'DisplayPort-0 connected') != "" ]] && xrandr --output DisplayPort-0 --mode 1280x1024 --rotate left --left-of DVI-D-1
-		xrandr --output DVI-D-0 --mode 1600x1200 --primary
+		xrandr --output DVI-D-0 --mode 1920x1080 --primary
 		;;
 	baldr)
 		[[ $(xrandr | grep 'HDMI1 connected') != "" ]] && xrandr --output HDMI1 --auto --left-of VGA1
