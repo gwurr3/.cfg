@@ -8,6 +8,9 @@ super + shift + Return
 super + shift + s
 	run_scratchpad
 
+super + shift + r
+	run_retro
+
 super + p
 	dmenu_run -i -p "Run command:" \
 	-nf "$DMENU_NF" -nb "$DMENU_NB" \

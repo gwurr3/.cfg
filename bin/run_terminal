@@ -1,3 +1,4 @@
 #exec xterm -fa 'Glass TTY VT220' -fs 12
 #exec xterm -fa 'Cousine' -fs 9
-xterm -fa 'IBM Plex Mono' -fs 9
+#xterm -fa 'IBM Plex Mono' -fs 9
+xterm -fa 'Cousine' -fs 9

@@ -22,6 +22,26 @@ export B_base0E="#cc99cc"
 export B_base0F="#d27b53"
 #
 
+
+#	# solarized light via https://github.com/aramisgithub/base16-solarized-scheme/blob/master/solarized-light.yaml
+#	export B_base00="#fdf6e3"
+#	export B_base01="#eee8d5"
+#	export B_base02="#93a1a1"
+#	export B_base03="#839496"
+#	export B_base04="#657b83"
+#	export B_base05="#586e75"
+#	export B_base06="#073642"
+#	export B_base07="#002b36"
+#	export B_base08="#dc322f"
+#	export B_base09="#cb4b16"
+#	export B_base0A="#b58900"
+#	export B_base0B="#859900"
+#	export B_base0C="#2aa198"
+#	export B_base0D="#268bd2"
+#	export B_base0E="#6c71c4"
+#	export B_base0F="#d33682"
+#	#
+
 export BSPWM_STATE="$HOME/last-bspwm-state.json"
 
 export AUTOSTARTCHECKFILE="$HOME/.autostartranfile"
