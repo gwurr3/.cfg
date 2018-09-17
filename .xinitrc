@@ -94,7 +94,7 @@ case "$SHORTHOSTNAME" in
 		xrandr --output DVI-D-0 --mode 1920x1080 --primary
 		;;
 	baldr)
-		[[ $(xrandr | grep 'HDMI1 connected') != "" ]] && xrandr --output HDMI1 --auto --left-of VGA1
+		[[ $(xrandr | grep 'HDMI1 connected') != "" ]] && xrandr --output HDMI1 --auto --left-of DP1
 		;;
 esac
 ## END BOX-SPECIFC ZONE ################

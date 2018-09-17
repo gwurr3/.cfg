@@ -45,7 +45,7 @@ if [ -n "$class" ] ; then
 		Pidgin)
 			echo "desktop=IRC2"
 			;;
-		KayakoDesktop.exe|Kayako*)
+		KayakoDesktop.exe|Kayako*|kayakodesktop.exe|*kayako*)
 			echo "desktop=K"
 			echo "state=pseudo_tiled"
 			;;
