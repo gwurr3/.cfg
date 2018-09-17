@@ -52,6 +52,15 @@ if [ -n "$class" ] ; then
 		Pinta)
 			echo "state=pseudo_tiled"
 			;;
+		mpv|feh|mplayer|ffplay|zathura|xpdf)
+			echo "desktop=BIG"
+			echo "state=floating"
+			;;
+		Wine|wine)
+			echo "desktop=misc2"
+			#echo "state=pseudo_tiled"
+			;;
+
 	esac
 fi
 
