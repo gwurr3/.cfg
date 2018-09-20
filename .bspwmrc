@@ -25,10 +25,10 @@ else
 			;;
 		baldr)
 			bspc monitor HDMI1 --rename LEFT
-			bspc monitor VGA1 --rename RIGHT
-			bspc wm --add-monitor BOTH 3840x1080+0+0
+			bspc monitor DP1 --rename RIGHT
 			bspc monitor LEFT -d I II IRC1 IRC2 K misc
 			bspc monitor RIGHT -d misc2 WEB2 WEB1
+			bspc wm --add-monitor BOTH 3840x1080+0+0
 			bspc monitor BOTH -d BIG
 			;;
 		thor)

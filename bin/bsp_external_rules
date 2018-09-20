@@ -45,9 +45,10 @@ if [ -n "$class" ] ; then
 		Pidgin)
 			echo "desktop=IRC2"
 			;;
-		KayakoDesktop.exe|Kayako*)
+		KayakoDesktop.exe|Kayako*|kayakodesktop.exe|*kayako*)
 			echo "desktop=K"
 			echo "state=pseudo_tiled"
+			break
 			;;
 		Pinta)
 			echo "state=pseudo_tiled"
@@ -57,7 +58,7 @@ if [ -n "$class" ] ; then
 			echo "state=floating"
 			;;
 		Wine|wine)
-			echo "desktop=misc2"
+			#echo "desktop=misc2"
 			#echo "state=pseudo_tiled"
 			;;
 
