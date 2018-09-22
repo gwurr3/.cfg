@@ -103,6 +103,11 @@ esac
 run_util redshift -O 4500k
 run_util feh --bg-fill $HOME/.BG.jpg
 
+# crypto agents
+run_util gpg-agent --daemon
+eval $(ssh-agent)
+
+
 ## Startup the WM stuff
 
 # so the programs will get started the first time bspwm starts

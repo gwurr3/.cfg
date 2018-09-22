@@ -19,9 +19,6 @@ run_util autocutsel -selection PRIMARY -fork
 run_util xscreensaver -no-splash
 run_util xautolock -time 15 -locker 'xscreensaver-command --lock'
 
-run_util gpg-agent --daemon
-run_util ssh-agent
-
 case "$SHORTHOSTNAME" in
 	sexbox)
 		#run_util phantomjs --ssl-protocol=any --ignore-ssl-errors=yes --webdriver=9134
