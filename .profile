@@ -111,6 +111,11 @@ if contains "$0" "bash" && ! contains "$TERMKIT_HOST_APP" "Cathode" ; then
 	fi
 fi
 
+#######---------------- GOLANG
+if test -d "${HOME}/go/bin" ; then
+	PATH=$HOME/go/bin:$PATH
+fi
+
 #######---------------- EXPORTS AND SHELL OPTS
 export PATH HOME TERM EDITOR HISTFILE LC_CTYPE LANG PS1 PS2 PS3 PS4 PAGER BROWSER CLICOLOR VISUAL UNAME XDG_CONFIG_HOME SHORTHOSTNAME EMAIL IS_THIS_A_MAC IS_THIS_ITERM2 RANGER_LOAD_DEFAULT_RC
 test "$0" != "zsh" && set -o emacs

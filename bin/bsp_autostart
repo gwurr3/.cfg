@@ -33,8 +33,9 @@ case "$SHORTHOSTNAME" in
 	baldr)
 		#run_bg /usr/bin/pidgin
 		run_bg ~/bin/kayako
-		run_bg apulse slack
-		run_bg apulse firefox
+		#run_bg apulse firefox
+		run_bg firefox
+		run_bg hipchat4
 		run_util redshift -O 4300k
 		run_util phantomjs --ssl-protocol=any --ignore-ssl-errors=yes --webdriver=9134
 		;;

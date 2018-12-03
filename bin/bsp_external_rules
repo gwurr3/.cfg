@@ -42,6 +42,9 @@ if [ -n "$class" ] ; then
 		Slack)
 			echo "desktop=IRC2"
 			;;
+		HipChat)
+			echo "desktop=IRC1"
+			;;
 		Pidgin)
 			echo "desktop=IRC2"
 			;;
