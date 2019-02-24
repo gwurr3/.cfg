@@ -32,15 +32,34 @@ else
 			bspc monitor BOTH -d BIG
 			;;
 		thor)
-			bspc config ignore_ewmh_focus true
-			bspc monitor DVI-D-0 --rename RIGHT
-			bspc monitor DVI-D-1 --rename MIDDLE
-			bspc monitor DisplayPort-0 --rename LEFT
-			bspc wm --add-monitor ALL 3968x1280+0+0
-			bspc monitor MIDDLE -d T1 T2 T3
-			bspc monitor LEFT -d misc IRC1 IRC2
-			bspc monitor RIGHT -d misc2 WEB2 WEB1
-			bspc monitor ALL -d BIG
+			#bspc config ignore_ewmh_focus true
+			#bspc monitor DVI-D-0 --rename RIGHT
+			#bspc monitor DVI-D-1 --rename MIDDLE
+			#bspc monitor DisplayPort-0 --rename LEFT
+			#bspc wm --add-monitor ALL 3968x1280+0+0
+			#bspc monitor MIDDLE -d T1 T2 T3
+			#bspc monitor LEFT -d misc IRC1 IRC2
+			#bspc monitor RIGHT -d misc2 WEB2 WEB1
+			#bspc monitor ALL -d BIG
+
+			#bspc monitor DVI-0 -d I II III IV V VI VII
+			#bspc monitor DisplayPort-0 -d VIII IX X
+			#bspc monitor DVI-0 --rename side
+
+			#bspc monitor DVI-1 --rename side
+			bspc monitor DisplayPort-0 --rename 4K
+			# DisplayPort-0 connected primary 3840x2160+1200+0
+			bspc wm --add-monitor topleft 1920x1080+0+20
+			bspc wm --add-monitor botleft 1920x1080+0+1080
+			bspc wm --add-monitor topright 1920x1080+1920+20
+			bspc wm --add-monitor botright 1920x1080+1920+1080
+			bspc monitor botleft -d I II III
+			#bspc monitor side -d IRC1
+			bspc monitor topleft -d IRC1 IRC2 IRC3
+			bspc monitor topright -d misc
+			bspc monitor botright -d WEB2 WEB1
+			bspc monitor 4K -d BIG
+
 			;;
 		fourten)
 			bspc monitor LVDS1 --rename MAIN

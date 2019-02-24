@@ -129,3 +129,6 @@ iterm2_set_badge() {
 	fi
 }
 
+home_print() {
+	lpr -P dellprinter5210 -h $@
+}

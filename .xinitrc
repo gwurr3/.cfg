@@ -89,9 +89,11 @@ case "$SHORTHOSTNAME" in
 		xrandr --output DisplayPort-0 --mode 3840x2160 --rate 30 --primary
 		;;
 	thor)
-		[[ $(xrandr | grep 'DVI-D-1 connected') != "" ]] && xrandr --output DVI-D-1 --mode 1280x1024 --rotate left --left-of DVI-D-0
-		[[ $(xrandr | grep 'DisplayPort-0 connected') != "" ]] && xrandr --output DisplayPort-0 --mode 1280x1024 --rotate left --left-of DVI-D-1
-		xrandr --output DVI-D-0 --mode 1920x1080 --primary
+		#[[ $(xrandr | grep 'DVI-D-1 connected') != "" ]] && xrandr --output DVI-D-1 --mode 1280x1024 --rotate left --left-of DVI-D-0
+		#[[ $(xrandr | grep 'DisplayPort-0 connected') != "" ]] && xrandr --output DisplayPort-0 --mode 1280x1024 --rotate left --left-of DVI-D-1
+		#xrandr --output DVI-D-0 --mode 1920x1080 --primary
+		[[ $(xrandr | grep 'DVI-1 connected') != "" ]] && xrandr --output DVI-1 --mode 1600x1200 --rotate left --left-of DisplayPort-0
+		xrandr --output DisplayPort-0 --mode 3840x2160 --rate 30 --primary
 		;;
 	baldr)
 		[[ $(xrandr | grep 'HDMI1 connected') != "" ]] && xrandr --output HDMI1 --auto --left-of DP1

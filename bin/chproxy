@@ -1,0 +1,5 @@
+#!/bin/sh
+
+
+ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no \
+	-N -D 11111 gwurr3@gw
