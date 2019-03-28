@@ -1,5 +1,11 @@
 #!/bin/sh
 
+runit() {
+	while true; do
+		ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o BatchMode=yes -N -D 11111 gwurr3@gw
+		sleep 10
+	done
 
-ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no \
-	-N -D 11111 gwurr3@gw
+}
+
+runit &
