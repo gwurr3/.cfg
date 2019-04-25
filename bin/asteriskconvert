@@ -1,0 +1,5 @@
+#!/bin/sh
+
+# convert input to gsm output for asterisk
+
+sox $1 -r 8000 -c1 $2.gsm lowpass 4000 compand 0.02,0.05 -60,-60,-30,-10,-20,-8,-5,-8,-2,-8 -8 -7 0.05
