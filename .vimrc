@@ -30,8 +30,8 @@ set laststatus=2
 set encoding=utf-8
 syntax enable
 "set t_Co=8
-"set background=dark
-set background=light	
+set background=dark
+"set background=light	
 "colorscheme base16-eighties
 "let base16colorspace=256
 "
