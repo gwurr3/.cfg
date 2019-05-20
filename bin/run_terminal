@@ -2,4 +2,16 @@
 #exec xterm -fa 'Cousine' -fs 9
 #xterm -fa 'IBM Plex Mono' -fs 9
 #xterm -fa 'Cousine' -fs 9
-xterm -fa 'Glass TTY VT220' -fs 20
+#
+case "$SHORTHOSTNAME" in
+		thor)
+			xterm -fa 'Glass TTY VT220' -fs 20
+			;;
+		fourten)
+			xterm -fa 'Glass TTY VT220' -fs 16
+			;;
+		*)
+			xterm -fa 'Glass TTY VT220' -fs 20
+			;;
+
+esac
