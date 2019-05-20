@@ -26,62 +26,70 @@ XTerm*scrollBar: false
 
 !*colorUL: #86a2b0
 
+#define crtbg #2B2B2B
+#define crtfg #e8840c
 
 URxvt*termName: rxvt-256color
 URxvt*xftAntialias: true
 
-!URxvt.font:xft:Glass TTY VT220:pixelsize=15
-!URxvt.boldfont:xft:Glass TTY VT220:pixelsize=15
-URxvt.font:xft:Cousine:pixelsize=12
-URxvt.boldfont:xft:Cousine Bold:pixelsize=12
+URxvt.font:xft:Glass TTY VT220:pixelsize=20
+URxvt.boldfont:xft:Glass TTY VT220:pixelsize=20
+!URxvt.font:xft:Cousine:pixelsize=12
+!URxvt.boldfont:xft:Cousine Bold:pixelsize=12
 
 
 
-!  ! Base16 Eighties
-!  ! Scheme: Chris Kempson (http://chriskempson.com)
-!  
-!  #define base00 #2d2d2d
-!  #define base01 #393939
-!  #define base02 #515151
-!  #define base03 #747369
-!  #define base04 #a09f93
-!  #define base05 #d3d0c8
-!  #define base06 #e8e6df
-!  #define base07 #f2f0ec
-!  #define base08 #f2777a
-!  #define base09 #f99157
-!  #define base0A #ffcc66
-!  #define base0B #99cc99
-!  #define base0C #66cccc
-!  #define base0D #6699cc
-!  #define base0E #cc99cc
-!  #define base0F #d27b53
+! Base16 Eighties
+! Scheme: Chris Kempson (http://chriskempson.com)
+
+#define base00 #2d2d2d
+#define base01 #393939
+#define base02 #515151
+#define base03 #747369
+#define base04 #a09f93
+#define base05 #d3d0c8
+#define base06 #e8e6df
+#define base07 #f2f0ec
+#define base08 #f2777a
+#define base09 #f99157
+#define base0A #ffcc66
+#define base0B #99cc99
+#define base0C #66cccc
+#define base0D #6699cc
+#define base0E #cc99cc
+#define base0F #d27b53
 
 
 
 ! Base16 Solarized Light
 ! Scheme: Ethan Schoonover (http://ethanschoonover.com/solarized)
+! 
+! #define base00 #fdf6e3
+! #define base01 #eee8d5
+! #define base02 #93a1a1
+! #define base03 #839496
+! #define base04 #657b83
+! #define base05 #586e75
+! #define base06 #073642
+! #define base07 #002b36
+! #define base08 #dc322f
+! #define base09 #cb4b16
+! #define base0A #b58900
+! #define base0B #859900
+! #define base0C #2aa198
+! #define base0D #268bd2
+! #define base0E #6c71c4
+! #define base0F #d33682
+! 
+! *.foreground:   base05
+! *.background:   base00
+! *.cursorColor:  base05
 
-#define base00 #fdf6e3
-#define base01 #eee8d5
-#define base02 #93a1a1
-#define base03 #839496
-#define base04 #657b83
-#define base05 #586e75
-#define base06 #073642
-#define base07 #002b36
-#define base08 #dc322f
-#define base09 #cb4b16
-#define base0A #b58900
-#define base0B #859900
-#define base0C #2aa198
-#define base0D #268bd2
-#define base0E #6c71c4
-#define base0F #d33682
+*.foreground:   crtfg
+*.background:   crtbg
+*.cursorColor:  crtfg
 
-*.foreground:   base05
-*.background:   base00
-*.cursorColor:  base05
+
 
 *.color0:       base00
 *.color1:       base08

@@ -52,6 +52,8 @@ xset dpms 0 0 300
 xhost +local:`whoami`
 
 
+# set that DPI Boiii
+xrandr --dpi 90
 
 ## BEGIN BOX-SPECIFC ZONE ################
 case "$SHORTHOSTNAME" in

@@ -48,14 +48,20 @@ else
 
 			#bspc monitor DVI-1 --rename side
 			bspc monitor DisplayPort-0 --rename 4K
-			# DisplayPort-0 connected primary 3840x2160+1200+0
-			bspc wm --add-monitor topleft 1920x1080+0+20
-			bspc wm --add-monitor botleft 1920x1080+0+1080
+			# DisplayPort-0 connected primary 3840x2160+0+0
+
+			# four way split mode
+			#bspc wm --add-monitor topleft 1920x1080+0+20
+			#bspc wm --add-monitor botleft 1920x1080+0+1080
+			#bspc wm --add-monitor topright 1920x1080+1920+20
+			#bspc wm --add-monitor botright 1920x1080+1920+1080
+
+			bspc wm --add-monitor left 1920x2160+0+20
 			bspc wm --add-monitor topright 1920x1080+1920+20
 			bspc wm --add-monitor botright 1920x1080+1920+1080
-			bspc monitor botleft -d I II III
+
+			bspc monitor left -d II III IV IRC1 IRC2 IRC3
 			#bspc monitor side -d IRC1
-			bspc monitor topleft -d IRC1 IRC2 IRC3
 			bspc monitor topright -d misc
 			bspc monitor botright -d WEB2 WEB1
 			bspc monitor 4K -d BIG
@@ -124,6 +130,7 @@ case "$SHORTHOSTNAME" in
 		;;
 	thor)
 		bspc config -d BIG window_gap 0
+		bspc config -m left bottom_padding `expr $PANEL_HEIGHT \* 2 + 2`
 		;;
 	*)
 
