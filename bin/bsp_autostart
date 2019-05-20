@@ -16,8 +16,6 @@ run_bg() {
 run_util autocutsel -fork
 run_util autocutsel -selection PRIMARY -fork
 
-run_util xscreensaver -no-splash
-run_util xautolock -time 15 -locker 'xscreensaver-command --lock'
 
 case "$SHORTHOSTNAME" in
 	sexbox)
@@ -29,6 +27,8 @@ case "$SHORTHOSTNAME" in
 	thor)
 		run_bg asound firefox
 		run_util redshift -O 4300k
+		run_util xscreensaver -no-splash
+		run_util xautolock -time 15 -locker 'xscreensaver-command --lock'
 		;;
 	baldr)
 		#run_bg /usr/bin/pidgin
@@ -41,6 +41,7 @@ case "$SHORTHOSTNAME" in
 		;;
 	fourten)
 		run_util redshift -O 4000K
+		run_util xidle -timeout 300 -program "/usr/local/bin/slock"
 		;;
 esac
 
