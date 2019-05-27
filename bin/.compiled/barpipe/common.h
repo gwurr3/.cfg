@@ -1,6 +1,6 @@
 // max number of bspwm "monitors" ( and "desktops," per each monitor ) to care about
 #ifndef MAXMONS
-#define MAXMONS 8
+#define MAXMONS 16
 #endif
 #ifndef MAXMONLEN
 #define MAXMONLEN 32
