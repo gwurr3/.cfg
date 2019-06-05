@@ -1,1 +1,2 @@
-.xinitrc
+. ~/.profile
+~/.xinitrc
