@@ -7,7 +7,7 @@ case "$SHORTHOSTNAME" in
 		thor)
 			xterm -fa 'Glass TTY VT220' -fs 20
 			;;
-		fourten)
+		fourten|lappytop)
 			xterm -fa 'Glass TTY VT220' -fs 12
 			;;
 		*)

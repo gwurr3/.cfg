@@ -57,6 +57,10 @@ xrandr --dpi 90
 
 ## BEGIN BOX-SPECIFC ZONE ################
 case "$SHORTHOSTNAME" in
+	lappytop)
+		xbacklight -set 45
+
+		;;
 	fourten)
 		#dispwin -d 1 ~/T410/monitorfiles/MONITOR/t410.icc 
 		if [[ $(xrandr | grep 'HDMI1 connected') != "" ]]; then

@@ -71,6 +71,10 @@ else
 			bspc monitor LVDS1 --rename MAIN
 			bspc monitor MAIN -d I II III IRC1 IRC2 IRC3 misc misc2 WEB2 WEB1 
 			;;
+		lappytop)
+			bspc monitor LVDS1 --rename MAIN
+			bspc monitor MAIN -d I II III IRC1 IRC2 IRC3 misc misc2 WEB2 WEB1 
+			;;
 		*)
 			bspc monitor -d I II IRC1 IRC2 K misc misc2 WEB2 WEB1 BIG
 			;;

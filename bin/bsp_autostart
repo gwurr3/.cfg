@@ -43,5 +43,9 @@ case "$SHORTHOSTNAME" in
 		run_util redshift -O 4000K
 		run_util xidle -timeout 300 -program "/usr/local/bin/slock"
 		;;
+	lappytop)
+		run_util redshift -O 4000K
+		run_util stalonetray --background $COLOR_BACKGROUND --geometry 1x1+1420+880
+		;;
 esac
 
