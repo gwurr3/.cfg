@@ -46,6 +46,8 @@ case "$SHORTHOSTNAME" in
 	lappytop)
 		run_util redshift -O 4000K
 		run_util stalonetray --background $COLOR_BACKGROUND --geometry 1x1+1420+880
+		run_util xidle -timeout 900 -program "/usr/bin/slock"
+		run_util pulseaudio
 		;;
 esac
 
