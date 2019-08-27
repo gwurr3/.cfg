@@ -73,7 +73,16 @@ else
 			;;
 		lappytop)
 			bspc monitor LVDS1 --rename MAIN
-			bspc monitor MAIN -d I II III IRC1 IRC2 IRC3 misc misc2 WEB2 WEB1 
+
+			if [[ $(xrandr | grep 'HDMI1 connected') != "" ]]; then
+				bspc monitor HDMI1 --rename RIGHT
+				bspc monitor MAIN -d I II III IRC1 IRC2 IRC3
+				bspc monitor RIGHT -d misc misc2 WEB2 WEB1 
+
+			else
+				bspc monitor MAIN -d I II III IRC1 IRC2 IRC3 misc misc2 WEB2 WEB1 
+			fi
+
 			;;
 		*)
 			bspc monitor -d I II IRC1 IRC2 K misc misc2 WEB2 WEB1 BIG
@@ -135,6 +144,11 @@ case "$SHORTHOSTNAME" in
 	thor)
 		bspc config -d BIG window_gap 0
 		bspc config -m left bottom_padding `expr $PANEL_HEIGHT \* 2 + 2`
+		;;
+	lappytop)
+		if [[ $(xrandr | grep 'HDMI1 connected') != "" ]]; then
+			bspc config -m RIGHT top_padding 0
+		fi
 		;;
 	*)
 
