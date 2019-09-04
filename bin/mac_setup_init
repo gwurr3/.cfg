@@ -10,11 +10,11 @@ sudo xcodebuild -license
 # check for brew
 if ! which brew ; then ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" ; fi
 
-brew cask install xquartz
+#brew cask install xquartz
 
 brew install koekeishiya/formulae/skhd
-brew tap crisidev/homebrew-chunkwm
-brew install chunkwm
+#brew tap crisidev/homebrew-chunkwm
+#brew install chunkwm
 brew services start skhd
 
 for i in findutils \
