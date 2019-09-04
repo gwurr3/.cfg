@@ -59,6 +59,9 @@ xrandr --dpi 90
 case "$SHORTHOSTNAME" in
 	lappytop)
 		xbacklight -set 45
+		if [[ $(xrandr | grep 'HDMI1 connected') != "" ]]; then
+			 xrandr --output HDMI1 --auto --right-of LVDS1
+		fi
 
 		;;
 	fourten)
