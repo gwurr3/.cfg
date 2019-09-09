@@ -24,7 +24,10 @@ for i in findutils \
 	node \
 	tmux \
 	wget \
-	wine
+	wine \
+	figlet \
+	ranger \
+	jq
 do
 	brew install $i
 done

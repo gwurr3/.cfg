@@ -1,0 +1,18 @@
+#!/bin/bash
+# requires jq, and xq ( comes with yq )
+
+KB_BATT='NA'
+MS_BATT='NA'
+
+if KB_BATT_TMP=$(ioreg -r -l -k "BatteryPercent" -a | xq -e '.plist.array.dict | map(select(.string[] | contains("Magic Keyboard"))) | .[0].integer[1]') ; then
+	KB_BATT="$KB_BATT_TMP"
+fi
+
+if MS_BATT_TMP=$(ioreg -r -l -k "BatteryPercent" -a | xq -e '.plist.array.dict | map(select(.string[] | contains("Magic Mouse 2"))) | .[0].integer[1]') ; then
+	MS_BATT="$MS_BATT_TMP"
+fi
+
+KB=`echo ${KB_BATT} | sed 's/"//g'`
+MS=`echo ${MS_BATT} | sed 's/"//g'`
+
+echo "KB Batt: ${KB}% | Mouse Batt: ${MS}%"
