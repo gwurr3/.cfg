@@ -27,7 +27,10 @@ for i in findutils \
 	wine \
 	figlet \
 	ranger \
-	jq
+	jq \
+	ansible \
+	ansible-lint \
+	awscli
 do
 	brew install $i
 done

@@ -1,6 +1,9 @@
 #!/bin/bash
 # requires jq, and xq ( comes with yq )
 
+# so ubersicht enviroment can find jq and xq, etc
+export PATH=$HOME/bin:/usr/local/bin:$PATH
+
 KB_BATT='NA'
 MS_BATT='NA'
 
