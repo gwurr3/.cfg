@@ -79,6 +79,11 @@ alias tunnelsftp='sftp -F ~/.ssh/proxyconfig'
 alias startx='startx -- -listen tcp -dpi 100'
 which gpg >/dev/null 2>&1 ||  alias gpg='gpg2'
 alias tmux='tmux -2'
+
+if command -v gfind ; then
+	alias find='gfind'
+fi
+
 if contains "$IS_THIS_A_MAC" "TRUE" ; then 
 	alias ic='cd ~/Library/Mobile\ Documents/com~apple~CloudDocs'
 	alias icloud='cd ~/Library/Mobile\ Documents/com~apple~CloudDocs'
