@@ -190,6 +190,20 @@ vmap  <expr>  D        DVB_Duplicate()
 "        redraw
 "    endfunction
 "
+"
+
+" For pasting code snippets
+function! Pastefile( FILE )
+        let arg_file = s:install_dir."/snippets/".a:FILE
+        let @" = join( readfile( arg_file ), "\n" )
+        put 
+        return ""
+endfunction
+"nnoremap <buffer> ,k :call Pastefile("example1")<CR>kdd
+"nnoremap <buffer> ,s :call Pastefile("example2")<CR>kdd
+
+
+
 
 
 
@@ -226,3 +240,8 @@ let g:vimwiki_folding='list'
 " SuperRetab function:
 :command! -nargs=1 -range SuperRetab <line1>,<line2>s/\v%(^ *)@<= {<args>}/\t/g
 " usage for 2 space indent would be :'<,'>SuperRetab 2
+
+
+" cf3 stuff
+:helptags ~/.vim/doc/
+autocmd BufRead,BufNewFile *.cf normal zR
