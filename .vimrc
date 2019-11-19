@@ -35,6 +35,9 @@ set background=dark
 "colorscheme base16-eighties
 "let base16colorspace=256
 "
+" we want modelines
+set modeline
+set modelines=10
 " swap BG light/dark
 map <Leader>bg :let &background = ( &background == "dark"? "light" : "dark" )<CR>
 
