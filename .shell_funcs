@@ -106,7 +106,7 @@ run_bg() {
 }
 
 genpass() {
-	tr -cd '[:alnum:]' < /dev/urandom | fold -w16 | head -n1
+	LC_CTYPE=C tr -cd '[:alnum:]' < /dev/urandom | fold -w16 | head -n1
 }
 
 ps_memavg() {
