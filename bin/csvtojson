@@ -1,0 +1,9 @@
+#!/bin/sh
+
+jq -Rsn '
+  {"occurrences":
+    [inputs
+     | . / "\n"
+     | (.[] | select(length > 0) | . / ";") as $input
+     | {"position": [$input[0], $input[1]], "taxo": {"espece": $input[2]}}]}
+' < $1
