@@ -134,8 +134,7 @@ home_print() {
 }
 
 # validate an ip
-function valid_ip()
-{
+valid_ip() {
 	local  ip=$1
 	local  stat=1
 	
@@ -149,5 +148,9 @@ function valid_ip()
 		stat=$?
 	fi
 	return $stat
+}
+
+straceall() {
+	strace $(pidof "${1}" | sed 's/\([0-9]*\)/-p \1/g')
 }
 
