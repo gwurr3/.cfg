@@ -143,4 +143,9 @@ if test -e "${HOME}/.profile.local" ; then
 	. ${HOME}/.profile.local
 fi
 
+#######---------------- Load polyglot git shell rice if exists
+if test -e "${HOME}/.profile.polyglot" ; then
+	. ${HOME}/.profile.polyglot
+fi
+
 # EOF
