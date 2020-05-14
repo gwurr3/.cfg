@@ -154,3 +154,46 @@ straceall() {
 	strace $(pidof "${1}" | sed 's/\([0-9]*\)/-p \1/g')
 }
 
+_filelooper() {
+	local file="$1"
+	shift
+	cat<<-EOF
+		while IFS= read -r line ; do $* \$line ; done<$file
+	EOF
+}
+
+
+filelooper() {
+	local runner="$( _filelooper $*)"
+	echo -e "will run: \n $runner" >&2
+	local timeout=3
+	while test $timeout -gt 0 ; do
+		echo -e "Will run in $timeout seconds. hit CTRL-C to cancel...\n" >&2
+		sleep 1
+		let timeout=$((timeout - 1))
+	done
+	#eval "`/bin/echo \'${runner}\'`"
+	eval "${runner}"
+}
+
+
+_df_echoerr() {
+	printf '%b\n\r' "$@" >&2 || true
+	return 0
+}
+
+_df_alert() {
+	printf '\a\n\r\t\t\t %b \n\r' "$@" >&2 || true
+	return 0
+}
+
+_df_error() {
+	printf '\a\n\r\tdotfiles init error: %b \n\r' "$@" >&2 || true
+	return 0
+}
+
+_df_panic() {
+	printf '\a\n\r\tdotfiles init panic: %b \n\r' "$@" >&2 || true
+	return 127
+}
+

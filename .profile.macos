@@ -1,0 +1,50 @@
+# vim: syntax=sh:
+# macos-specific .profile stuff goes in here
+
+
+
+alias ic='cd ~/Library/Mobile\ Documents/com~apple~CloudDocs'
+alias icloud='cd ~/Library/Mobile\ Documents/com~apple~CloudDocs'
+
+# if we have brew-installed gnu coreutils, let's use em.
+# also, re-alias ls/ll to use the gnu ones
+if test -d "/usr/local/opt/coreutils/libexec/gnubin" ; then
+	PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+	contains "$0" "bash" && hash -p /usr/local/opt/coreutils/libexec/gnubin/ls -d ls
+	alias ll="ls -la --color=always"
+	alias ls="ls --color=auto"
+fi
+
+# below we see if we're running the default bash, and if so, exec the good bash.
+# on MacOS we need to use libproc calls to find exe path for pid.
+# see: https://ops.tips/blog/macos-pid-absolute-path-and-procfs-exploration/
+# we'll rely on 'pidpath' to do this for us.
+# to install: 'go get github.com/cirocosta/pidpath'
+#
+# yes, you can just check $SHELL or $BASH, but things can get buggy with brew;
+# i'd rather not have an infinite loop bug in my interactive login.
+#
+# Oh, and the whole point of this is so I don't have to change my login shell.
+# During an update, binary compatibility changes may bork a brew-installed bash,
+# which would effectively lock me out of my user.
+
+# the bash we want:
+GOODBASH=/usr/local/bin/bash
+
+contains "$0" "bash" && \
+	test -x "$GOODBASH" && \
+	{ \
+		command -v pidpath >>/dev/null || \
+		_df_panic "pidpath not found. try: go get github.com/cirocosta/pidpath" ; \
+	} && \
+	test "`pidpath $$`" = "/bin/bash" && \
+	{ \
+		$GOODBASH --version >>/dev/null || \
+	        _df_panic "something is wrong with $GOODBASH" ; \
+	} && \
+	_df_echoerr "Swapping $SHELL to $GOODBASH via exec()..." && \
+	exec -l $GOODBASH --login || true
+
+
+
+#export PATH

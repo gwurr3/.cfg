@@ -1,0 +1,72 @@
+# .inputrc
+# gnu readline configuration
+#
+
+# start out with setting vi mode
+set editing-mode vi
+set keymap vi-insert
+
+# set some common stuff
+set bell-style visible
+set comment-begin #
+set completion-query-items 300
+
+#set meta-flag on
+#set input-meta on
+#set convert-meta off
+#set output-meta on
+
+# bash-only:
+$if Bash
+set blink-matching-paren on
+set colored-completion-prefix on
+set colored-stats on
+set expand-tilde on
+set horizontal-scroll-mode off
+set mark-directories on
+set mark-modified-lines on
+set mark-symlinked-directories on
+set match-hidden-files on
+set page-completions on
+set skip-completed-text on
+set completion-ignore-case on
+set completion-map-case on
+
+set show-all-if-ambiguous on
+set show-all-if-unmodified on
+
+set disable-completion off
+set enable-keypad on
+set history-preserve-point off
+set print-completions-horizontally off
+set visible-stats on
+set completion-prefix-display-length 3
+
+# add a string to the beginning of the prompt indicating the editing mode: 
+# emacs, vi command, or vi insertion.
+set show-mode-in-prompt on
+set vi-cmd-mode-string "vi-cmd"
+set vi-ins-mode-string "VI-INS"
+
+# Incremental searching with Up and Down. i.e. 'ssh <up>' to get the last 'ssh' command you used
+"\e[A": history-search-backward
+"\e[B": history-search-forward
+
+# no history limit
+set history-size -1
+
+$endif
+
+
+$if mode=vi
+"\C-a": beginning-of-line
+"\C-e": end-of-line
+"\C-l": clear-screen
+"\C-n": next-history
+"\C-p": previous-history
+"\C-w": backward-kill-word
+
+# "\e.": yank-last-arg
+"\e_": yank-last-arg
+$endif
+

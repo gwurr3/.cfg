@@ -6,7 +6,7 @@
 #   |_|
 # sh/ksh/bash/zsh initialization
 
-. ~/.shell_funcs # my custom funcs and misc customizations
+. ~/.shell_funcs # load our funcs first
 
 #######---------------- COMMON ENV VARIABLES
 
@@ -77,20 +77,14 @@ case "$UNAME" in
 esac
 
 alias insecssh='ssh -o "StrictHostKeyChecking=no" -o "UserKnownHostsFile=/dev/null" -o "PreferredAuthentications=keyboard-interactive"'
-alias tunnelssh='ssh -F ~/.ssh/proxyconfig'
-alias tunnelsftp='sftp -F ~/.ssh/proxyconfig'
 alias startx='startx -- -listen tcp -dpi 100'
-which gpg >/dev/null 2>&1 ||  alias gpg='gpg2'
+command -v gpg >/dev/null 2>&1 ||  alias gpg='gpg2'
 alias tmux='tmux -2'
 
-if command -v gfind ; then
+if command -v gfind >/dev/null 2>&1 ; then
 	alias find='gfind'
 fi
 
-if contains "$IS_THIS_A_MAC" "TRUE" ; then 
-	alias ic='cd ~/Library/Mobile\ Documents/com~apple~CloudDocs'
-	alias icloud='cd ~/Library/Mobile\ Documents/com~apple~CloudDocs'
-fi
 if test -x "$(command -v nvim)" ; then
 	alias vim='nvim'
 fi
@@ -100,36 +94,30 @@ alias decrypt='gpg --use-agent --batch -d'
 
 alias dotfiles='git --git-dir=$HOME/.cfg/ --work-tree=$HOME' # this is for the git repo that this file is a part of
 alias dotfiles-update='dotfiles status && dotfiles pull && dotfiles submodule init && dotfiles submodule update && dotfiles submodule status && dotfiles status'
+alias dotfiles-check='dotfiles status -unormal' # so we can see untracked files without recursively listing entire homedir
 
-#######---------------- iterm2 integrations if shell is bash and if term not Cathode
-if contains "$0" "bash" && ! contains "$TERMKIT_HOST_APP" "Cathode" ; then 
-	#test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
-	if test -e "${HOME}/.iterm2_shell_integration.bash" ; then
-		source "${HOME}/.iterm2_shell_integration.bash"
-		if test -e "${HOME}/.iterm2/it2check" && ${HOME}/.iterm2/it2check ; then
-			IS_THIS_ITERM2=TRUE
-			alias tmux='tmux -CC'
-			#test -e "${HOME}/.iterm2/it2attention" && ${HOME}/.iterm2/it2attention fireworks
-			test -e "${HOME}/.iterm2/it2attention" && ${HOME}/.iterm2/it2attention start
-		elif test -n $ITERM_SHELL_INTEGRATION_INSTALLED && test -n $TMUX ; then
-			IS_THIS_ITERM2=TMUX
-			alias tmux='tmux'
-			test -e "${HOME}/.iterm2/it2attention" && ${HOME}/.iterm2/it2attention start
-		else
-			alias tmux='tmux'
-		fi
-	fi
-fi
 
 #######---------------- GOLANG
 if test -d "${HOME}/go/bin" ; then
 	PATH=$HOME/go/bin:$PATH
 fi
 
+#######---------------- Some MacOS ricing
+if contains "$IS_THIS_A_MAC" "TRUE" && test -e "${HOME}/.profile.macos" ; then
+	. ${HOME}/.profile.macos
+fi
+
 #######---------------- EXPORTS AND SHELL OPTS
+
 export PATH HOME TERM EDITOR HISTFILE HISTSIZE HISTFILESIZE LC_CTYPE LANG PS1 PS2 PS3 PS4 PAGER BROWSER CLICOLOR VISUAL UNAME XDG_CONFIG_HOME SHORTHOSTNAME EMAIL IS_THIS_A_MAC IS_THIS_ITERM2 RANGER_LOAD_DEFAULT_RC _JAVA_AWT_WM_NONREPARENTING
-test "$0" != "zsh" && set -o emacs
+
+test "$0" != "zsh" && set -o vi
 umask 022
+
+#######---------------- Bash-specific ricing
+if contains "$0" "bash" && test -e "${HOME}/.profile.bashisms" ; then 
+	. ${HOME}/.profile.bashisms
+fi
 
 #######---------------- PERLBREW
 PERLBREWFILE=$HOME/perl5/perlbrew/etc/bashrc
@@ -144,8 +132,8 @@ if test -e "${HOME}/.profile.local" ; then
 fi
 
 #######---------------- Load polyglot git shell rice if exists
-if test -e "${HOME}/.profile.polyglot" ; then
-	. ${HOME}/.profile.polyglot
-fi
+#if test -e "${HOME}/.profile.polyglot" ; then
+	#. ${HOME}/.profile.polyglot
+#fi
 
 # EOF
