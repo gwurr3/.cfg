@@ -45,8 +45,8 @@ set completion-prefix-display-length 3
 # add a string to the beginning of the prompt indicating the editing mode: 
 # emacs, vi command, or vi insertion.
 set show-mode-in-prompt on
-set vi-cmd-mode-string "vi-cmd"
-set vi-ins-mode-string "VI-INS"
+#set vi-cmd-mode-string "vi-cmd"
+#set vi-ins-mode-string "VI-INS"
 
 # Incremental searching with Up and Down. i.e. 'ssh <up>' to get the last 'ssh' command you used
 "\e[A": history-search-backward

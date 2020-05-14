@@ -21,12 +21,103 @@ set +b
 
 
 # populate LS_COLORS if we have dircolors util and ~/.LS_COLORS is present.
-if which dircolors >>/dev/null && test -e "${HOME}/.LS_COLORS" ; then
+if command -v dircolors >>/dev/null && test -e "${HOME}/.LS_COLORS" ; then
 	eval "$(dircolors --sh ${HOME}/.LS_COLORS)"
 fi
 
 # ensure .inputrc is loaded for readline config
 bind -f ~/.inputrc
+
+BASH_RED="\001\033[31m\002"
+BASH_GREEN="\001\033[32m\002"
+BASH_YELLOW="\001\033[33m\002"
+BASH_BLUE="\001\033[34m\002"
+BASH_PINK="\001\033[35m\002"
+BASH_CYAN="\001\033[36m\002"
+BASH_WHITE="\001\033[37m\002"
+
+BASH_BRED="\001\033[91m\002"
+BASH_BGREEN="\001\033[92m\002"
+BASH_BYELLOW="\001\033[93m\002"
+BASH_BBLUE="\001\033[94m\002"
+BASH_BPINK="\001\033[95m\002"
+BASH_BCYAN="\001\033[96m\002"
+BASH_BWHITE="\001\033[97m\002"
+
+BASH_RESET="\001\033[0m\002"
+
+function __center_print() {
+	local string="$1"
+	# we need to find the length of the string EXCLUDING all the special chars.
+	# this needs gnu sed. on macos: brew install gnu-sed
+	local realstring="`echo -e "$string" | sed 's/\x1b\[[0-9;]*m//g' |  tr -cd '[:print:]' `"
+
+	local termwidth="$(tput cols)"
+	local padding="$(printf '%0.1s' ={1..500})"
+	printf '%*.*s %s %*.*s' 0 "$(((termwidth-2-${#realstring})/2))" "$padding" "$string" 0 "$(((termwidth-1-${#realstring})/2))" "$padding"
+}
+
+function __right_print() {
+	printf "\001"
+	printf "%b" "$(tput sc)"
+	printf "\002"
+	printf "%*s" $((COLUMNS - 8 )) "$1"
+	printf "\001"
+	printf "%b" "$(tput rc)"
+	printf "\002"
+}
+
+
+function __check_retval() {
+	local retval=$1
+
+	local string=
+	if test $retval -gt 0 ; then
+		local string+="${BASH_RED}"
+	else
+		local string+="${BASH_GREEN}"
+	fi
+	local string+=">${retval}${BASH_RESET}"
+	printf "$string"
+}
+
+
+
+function __pmt_cmd() {
+
+	local retval="$?"
+
+	local localdts="$(TZ='America/Los_Angeles' date '+%Y:Q%q:W%U %a,%b %d %H:%M:%S')"
+	local utcdts="$(date -u '+%H:%M %Z')"
+	local dts="${BASH_BWHITE}| ${BASH_WHITE}${localdts} ${BASH_BWHITE}| ${BASH_PINK}${utcdts} ${BASH_BWHITE}|${BASH_RESET}"
+
+	PS1='\n'
+	PS1+="\$(__center_print \"${dts}\")\n"
+
+	local rightstuff='(jobs:\j) (\l) :\!:'
+
+	PS1+=`__right_print "${rightstuff}"`
+	PS1+=" \$(__check_retval $retval) "
+
+	PS1+="${BASH_BRED}\u${BASH_BWHITE}@${BASH_BBLUE}\h${BASH_BWHITE}:${BASH_BPINK}\w${BASH_RESET} \n"
+	PS1+="${BASH_BWHITE}"
+	PS1+=' \$ '
+	PS1+="${BASH_RESET}"
+
+	history -a
+
+	return $retval
+}
+
+
+#PS1='\n \u@\h:\w  [\d \t]  (jobs:\j) (\l) :\!:\n \$ '
+PS1=' \$ '
+PS2='--> '
+PS3='input : '
+PS4='+debug: '
+
+
+unset PROMPT_COMMAND
 
 
 #######---------------- iterm2 integrations if term not Cathode
@@ -48,4 +139,10 @@ if ! contains "$TERMKIT_HOST_APP" "Cathode" ; then
 	fi
 fi
 
-export IS_THIS_ITERM2
+
+PROMPT_COMMAND="__pmt_cmd; ${PROMPT_COMMAND}"
+
+export IS_THIS_ITERM2 PS1 PS2 PS3 PS4 PROMPT_COMMAND
+
+
+

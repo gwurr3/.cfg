@@ -89,6 +89,10 @@ if test -x "$(command -v nvim)" ; then
 	alias vim='nvim'
 fi
 
+if test -x "$(command -v gsed)" ; then
+	alias sed='gsed'
+fi
+
 alias encrypt='gpg --use-agent -c'
 alias decrypt='gpg --use-agent --batch -d'
 
