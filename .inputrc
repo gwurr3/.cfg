@@ -40,17 +40,17 @@ set enable-keypad on
 set history-preserve-point off
 set print-completions-horizontally off
 set visible-stats on
-set completion-prefix-display-length 3
+set completion-prefix-display-length 10
 
 # add a string to the beginning of the prompt indicating the editing mode: 
 # emacs, vi command, or vi insertion.
 set show-mode-in-prompt on
-#set vi-cmd-mode-string "vi-cmd"
-#set vi-ins-mode-string "VI-INS"
+set vi-cmd-mode-string "\001\033[31m\002 CMD: \001\033[0m\002"
+set vi-ins-mode-string "\001\033[33m\002 INS+ \001\033[0m\002"
 
 # Incremental searching with Up and Down. i.e. 'ssh <up>' to get the last 'ssh' command you used
-"\e[A": history-search-backward
-"\e[B": history-search-forward
+#"\e[A": history-search-backward
+#"\e[B": history-search-forward
 
 # no history limit
 set history-size -1
@@ -66,7 +66,7 @@ $if mode=vi
 "\C-p": previous-history
 "\C-w": backward-kill-word
 
-# "\e.": yank-last-arg
-"\e_": yank-last-arg
+"\e.": yank-last-arg
+#"\e_": yank-last-arg
 $endif
 
