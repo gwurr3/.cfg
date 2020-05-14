@@ -303,7 +303,11 @@ __bp_install() {
 
     # Install our hooks in PROMPT_COMMAND to allow our trap to know when we've
     # actually entered something.
-    PROMPT_COMMAND="__bp_precmd_invoke_cmd; ${existing_prompt_command} __bp_interactive_mode"
+    #PROMPT_COMMAND="__bp_precmd_invoke_cmd; ${existing_prompt_command} __bp_interactive_mode"
+
+    # Need to change this to not prepend my PROMPT_COMMAND -gwurr3
+    PROMPT_COMMAND="${existing_prompt_command}  __bp_precmd_invoke_cmd; __bp_interactive_mode"
+
     eval "$__bp_trap_install_string"
 
     # Add two functions to our arrays for convenience
