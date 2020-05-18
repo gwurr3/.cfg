@@ -13,10 +13,11 @@
 #set -x
 
 _usage() {
+	local me="`basename $0`"
 	cat 1>&2 <<EOF
 
 
-Usage: `basename $0` [OPTIONS] [FILE]
+Usage: $me [OPTIONS] [FILE]
 Encrypt/Decrypt FILE, or data from stdin if FILE is not present.
 Default action is to ENcrypt, see "-d" for DEcrypting.
 
@@ -37,6 +38,13 @@ You can make a PEM copy of your RSA ssh key like so:
 	openssl pkcs8 -topk8 -in ~/.ssh/id_rsa -out ~/.ssh/id_rsa.pem
 Then, make a PEM-format pubkey, as well:
 	openssl rsa -in ~/.ssh/id_rsa.pem -pubout -outform pem > ~/.ssh/id_rsa.pub.pem
+
+
+EXAMPLES:
+	tar a directory and encrypt it:
+		tar -cvf - secret/ | $me > secret.tar.gwurr3crypt
+	decrypt and untar the result from above:
+		$me -d secret.tar.gwurr3crypt | tar xvf -
 
 EOF
 
