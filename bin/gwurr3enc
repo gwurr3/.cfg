@@ -33,6 +33,11 @@ Key Behavior:
 
 Key must be RSA in PEM format. Tested only with PKCS#8 Pivate key.
 
+You can make a PEM copy of your RSA ssh key like so:
+	openssl pkcs8 -topk8 -in ~/.ssh/id_rsa -out ~/.ssh/id_rsa.pem
+Then, make a PEM-format pubkey, as well:
+	openssl rsa -in ~/.ssh/id_rsa.pem -pubout -outform pem > ~/.ssh/id_rsa.pub.pem
+
 EOF
 
 }
