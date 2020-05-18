@@ -1,0 +1,158 @@
+#!/bin/bash
+# 
+#                                _____
+#   __ ___      ___   _ _ __ _ _|___ /  ___ _ __   ___
+#  / _` \ \ /\ / / | | | '__| '__||_ \ / _ \ '_ \ / __|
+# | (_| |\ V  V /| |_| | |  | |  ___) |  __/ | | | (__
+#  \__, | \_/\_/  \__,_|_|  |_| |____/ \___|_| |_|\___|
+#  |___/
+# 
+
+# this is my encrypting/decrypting tool
+
+#set -x
+
+_usage() {
+	cat 1>&2 <<EOF
+
+
+Usage: `basename $0` [OPTIONS] [FILE]
+Encrypt/Decrypt FILE, or data from stdin if FILE is not present.
+Default action is to ENcrypt, see "-d" for DEcrypting.
+
+Optional Arguments:
+	-h		display this help text
+	-d		decrypt instead of encrypt
+
+Key Behavior:
+	This script uses the following two environment variables:
+	PUBKEY		Path to pubkey to encrypt for.
+			defaults: \$HOME/.ssh/id_rsa.pub.pem
+	PRIVKEY		Path to Private Key to decrypt with.
+			defaults: \$HOME/.ssh/id_rsa.pem
+
+Key must be RSA in PEM format. Tested only with PKCS#8 Pivate key.
+
+EOF
+
+}
+
+DECRYPT=FALSE
+
+while getopts ":hd" opt; do
+	case ${opt} in
+		h )
+			_usage
+			exit 1
+			;;
+		d )
+			DECRYPT=TRUE
+			shift
+			;;
+		\? )
+			echo "Invalid Option: -$OPTARG" 1>&2
+			_usage
+			exit 1
+			;;
+	esac
+done
+
+
+[ -z "$PUBKEY" ] && PUBKEY=$HOME/.ssh/id_rsa.pub.pem
+[ -z "$PRIVKEY" ] && PRIVKEY=$HOME/.ssh/id_rsa.pem
+export PUBKEY PRIVKEY DECRYPT
+
+set -eE  # same as: `set -o errexit -o errtrace`
+set -o pipefail
+
+TMPDIR=`mktemp -d`
+
+_do_exit() {
+	rm -rf ${TMPDIR}/* || true
+	rm -rf ${TMPDIR} || echo -e "Could not delete $TMPDIR !!!\n" 1>&2
+}
+_do_panic() {
+	echo -e "Error occured. Removing tmpfiles and exiting!\n" 1>&2
+	_do_exit
+	exit 1
+}
+
+trap '_do_exit' EXIT 
+trap '_do_panic' ERR 
+
+pushd() {
+	command pushd "$@" > /dev/null
+}
+popd() {
+	command popd "$@" > /dev/null
+}
+export pushd popd
+
+_encrypt() {
+
+	local OUT="${TMPDIR}/DATA"
+	local KEY="${TMPDIR}/KEY"
+	chmod 700 ${TMPDIR}
+	pushd ${TMPDIR}
+
+	touch ${OUT}
+	chmod 600 ${OUT}
+	printf "BEGINKEY\n" > ${OUT}
+
+	# gen rand key and put encrypted copy of it in top of outfile
+	openssl rand 128 | tee ${KEY} | base64 | \
+		openssl rsautl -encrypt -inkey ${PUBKEY} -pubin | base64 >> ${OUT}
+
+	printf "ENDKEY\n" >> ${OUT}
+
+	printf "BEGINDATA\n" >> ${OUT}
+
+	# read data from stdin, encrypt, and append to outfile:
+	base64 < /dev/stdin | \
+		openssl enc -aes-256-cbc -salt -pass file:${KEY} | base64 >> ${OUT}
+
+	printf "ENDDATA\n" >> ${OUT}
+
+	# rot13, gzip, then base64 the final output
+	cat ${OUT} | tr 'A-Za-z' 'N-ZA-Mn-za-m' | gzip -9 | base64 | cat
+	popd
+}
+
+
+_decrypt() {
+	local TMP="${TMPDIR}/TMP"
+	local DATA="${TMPDIR}/DATA"
+	local KEY="${TMPDIR}/KEY"
+	for i in ${TMP} ${DATA} ${KEY} ; do
+		touch $i && chmod 600 $i
+	done
+	chmod 700 ${TMPDIR}
+	pushd ${TMPDIR}
+
+	base64 -d < /dev/stdin | gunzip |  tr 'A-Za-z' 'N-ZA-Mn-za-m' > ${TMP}
+	cat ${TMP} | sed -n '/BEGINKEY/,/ENDKEY/p' | sed '1,1d; $d' | base64 -d > ${KEY}
+	cat ${TMP} | sed -n '/BEGINDATA/,/ENDDATA/p' | sed '1,1d; $d' | base64 -d > ${DATA}
+
+	openssl rsautl -decrypt -inkey ${PRIVKEY} -in ${KEY} | base64 -d > ${TMP}
+
+	cat ${DATA} | openssl enc -d -aes-256-cbc -pass file:${TMP} | base64 -d | cat
+
+	popd
+}
+
+
+
+if (( $# == 0 )) ; then
+	if [ "$DECRYPT" = "TRUE" ] ; then
+		_decrypt < /dev/stdin
+	else
+		_encrypt < /dev/stdin
+	fi
+else
+	if [ "$DECRYPT" = "TRUE" ] ; then
+		_decrypt <<< "`cat $1`"
+	else
+		_encrypt <<< "`cat $1`"
+	fi
+fi
+
