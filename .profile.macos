@@ -15,6 +15,12 @@ if test -d "/usr/local/opt/coreutils/libexec/gnubin" ; then
 	alias ls="ls --color=auto"
 fi
 
+INTERACTIVE=FALSE
+case "$-" in
+	*i*)	INTERACTIVE=TRUE && export INTERACTIVE ;;
+	*)	INTERACTIVE=FALSE ;;
+esac
+
 # below we see if we're running the default bash, and if so, exec the good bash.
 # on MacOS we need to use libproc calls to find exe path for pid.
 # see: https://ops.tips/blog/macos-pid-absolute-path-and-procfs-exploration/
@@ -31,7 +37,7 @@ fi
 # the bash we want:
 GOODBASH=/usr/local/bin/bash
 
-contains "$0" "bash" && \
+contains "$0" "bash" && contains "$INTERACTIVE" "TRUE" && \
 	test -x "$GOODBASH" && \
 	{ \
 		command -v pidpath >>/dev/null || \
