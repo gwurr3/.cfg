@@ -91,6 +91,10 @@ case "$SHORTHOSTNAME" in
 		xinput set-prop "/dev/wsmouse" "WS Pointer Wheel Emulation Inertia" 3
 		# increase pointer speed
 		xinput set-prop "/dev/wsmouse" "Device Accel Constant Deceleration" 0.6
+		# disable system beep
+		xset b off
+		# use caps lock as ctrl key
+		#setxkbmap -option ctrl:nocaps
 
 		;;
 	sexbox)
