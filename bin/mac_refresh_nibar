@@ -1,2 +1,3 @@
  osascript -e 'tell application "Übersicht" to refresh widget id "nibar-spaces-primary-jsx"'
  osascript -e 'tell application "Übersicht" to refresh widget id "nibar-spaces-secondary-jsx"'
+ osascript -e 'tell application "Übersicht" to refresh widget id "nibar-spaces-tertiary-jsx"'

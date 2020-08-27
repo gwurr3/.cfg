@@ -1,0 +1,1 @@
+virt-manager -c 'qemu+ssh://mack/system?socket=/var/run/libvirt/libvirt-sock'

@@ -1,0 +1,17 @@
+#!/bin/bash
+
+
+TMPFILE=`mktemp -q -t tmp.vipe.XXXXXXXXX`
+trap "rm -f ${TMPFILE}" EXIT
+
+# read from stdin
+if [ ! -t 0 ]; then
+  cat - > $TMPFILE
+fi
+
+# spawn editor with stdio connected
+${EDITOR} "${TMPFILE}" < /dev/tty > /dev/tty || exit $?
+
+# write to stdout
+cat $TMPFILE && exit 0 || exit $?
+

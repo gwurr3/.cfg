@@ -5,15 +5,16 @@ yabai -m config mouse_follows_focus          on
 #yabai -m config focus_follows_mouse          autoraise
 yabai -m config focus_follows_mouse          autofocus
 yabai -m config window_placement             second_child
+# makes floating windows always on top:
 yabai -m config window_topmost               on
 yabai -m config window_shadow                on
 yabai -m config window_opacity               on
-yabai -m config window_opacity_duration      0.0
+yabai -m config window_opacity_duration      0.2
 #yabai -m config active_window_opacity        1.0
-yabai -m config active_window_opacity        0.96
+yabai -m config active_window_opacity        0.98
 yabai -m config normal_window_opacity        0.88
 yabai -m config window_border                on
-yabai -m config window_border_width          10
+yabai -m config window_border_width          8
 yabai -m config active_window_border_color   0xff775759
 yabai -m config normal_window_border_color   0xff555555
 yabai -m config insert_feedback_color        0xffd75f5f
@@ -25,19 +26,42 @@ yabai -m config mouse_action2                resize
 
 # general space settings
 yabai -m config layout                       bsp
-yabai -m config top_padding                  12
-yabai -m config bottom_padding               12
-yabai -m config left_padding                 12
-yabai -m config right_padding                12
-#yabai -m config window_gap                   06
-yabai -m config window_gap                   12
+yabai -m config top_padding                  40
+yabai -m config bottom_padding               40
+yabai -m config left_padding                 20
+yabai -m config right_padding                20
 
-# add padding for bar
+yabai -m config window_gap                   20
+
+# add fixed padding for bar
 yabai -m config external_bar all:20:20
 
+# set space 1 to have no pad
+yabai -m config --space 1 window_gap         0
+yabai -m config --space 1 right_padding      0
+yabai -m config --space 1 left_padding       0
+yabai -m config --space 1 top_padding        0
+yabai -m config --space 1 bottom_padding     0
+
 # float and sticky system preferences
-yabai -m rule --add app="^System Preferences$" manage=off
+yabai -m rule --add app="^System Preferences$" manage=off layer=above
 yabai -m rule --add app="^System Preferences$" sticky=on
+
+yabai -m rule --add app="Finder" manage=off layer=above
+yabai -m rule --add app="App Store" manage=off layer=above
+
+yabai -m rule --add title='Opening$' manage=off layer=above
+yabai -m rule --add title='Preferences$' manage=off layer=above
+
+# pesky MS Teams notification window popups
+#yabai -m rule --add title='^Microsoft Teams Notification$' manage=off layer=above sticky=on
+yabai -m rule --add title='^Microsoft Teams Notification$' manage=off layer=below sticky=off border=off space=9
+
+yabai -m rule --add app="GarageBand" sticky=off manage=off layer=below space=4
+
+# focus last recent window in event of window or app getting closed:
+yabai -m signal --add event=window_destroyed action="yabai -m query --windows --window &> /dev/null || yabai -m window --focus recent"
+yabai -m signal --add event=application_terminated action="yabai -m query --windows --window &> /dev/null || yabai -m window --focus recent"
 
 # show digital colour meter topmost and on all spaces
 #yabai -m rule --add app="^Digital Colou?r Meter$" sticky=on
@@ -47,3 +71,5 @@ yabai -m signal --add event=space_changed \
     action="$HOME/bin/mac_refresh_nibar"
 yabai -m signal --add event=display_changed \
     action="$HOME/bin/mac_refresh_nibar"
+
+mac_restart_uber

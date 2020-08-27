@@ -29,13 +29,16 @@
 #
 #                                  an EOL character signifies the end of the bind.
 
-
-cmd - return : osascript ~/bin/.osa/run_term.scpt
-lshift + lcmd - return : osascript ~/bin/.osa/run_oterm.scpt
-lshift + lcmd - f : osascript ~/bin/.osa/run_finder.scpt
+# start term
+lalt - return : osascript ~/bin/.osa/run_term.scpt
+lalt + lshift - return : osascript ~/bin/.osa/run_oterm.scpt
+# start finder
+lalt + lshift - f : osascript ~/bin/.osa/run_finder.scpt
+# close window
+lalt + lshift - c : yabai -m window --close
 
 # restart
-shift + alt - r : brew services restart skhd
+shift + alt - r : launchctl kickstart -k "gui/${UID}/homebrew.mxcl.yabai"
 
 # focus window
 lalt - h : yabai -m window --focus west
@@ -118,15 +121,17 @@ lalt - 8 : yabai -m space --focus 8
 lalt - 9 : yabai -m space --focus 9
 
 # focus monitor
-lalt - 0x2B  : yabai -m display --focus prev || yabai -m display --focus last
-lalt - 0x2F  : yabai -m display --focus next || yabai -m display --focus first
+#lalt - 0x2B  : yabai -m display --focus prev || yabai -m display --focus last
+#lalt - 0x2F  : yabai -m display --focus next || yabai -m display --focus first
+lalt - 0x2B  : yabai -m display --focus west
+lalt - 0x2F  : yabai -m display --focus east
 lctrl + lalt - 3  : yabai -m display --focus 3
 lctrl + lalt - 2  : yabai -m display --focus 2
 lctrl + lalt - 1  : yabai -m display --focus 1
 
 # send window to monitor
-lalt + lshift - 0x2B  : yabai -m window --display prev
-lalt + lshift - 0x2F  : yabai -m window --display next
+lalt + lshift - 0x2B  : yabai -m window --display west
+lalt + lshift - 0x2F  : yabai -m window --display east
 lctrl + lalt + lshift - 1  : yabai -m window --display 1
 lctrl + lalt + lshift - 2  : yabai -m window --display 2
 lctrl + lalt + lshift - 3  : yabai -m window --display 3

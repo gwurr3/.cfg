@@ -1,0 +1,16 @@
+#!/bin/bash
+
+function _kill() {
+	pgrep Übersicht | xargs kill
+}
+
+function _run() {
+	( "/Applications/Übersicht.app/Contents/MacOS/Übersicht" 2>&1 | tee -a "${HOME}/.uber.log" ) &
+}
+
+
+_kill || true
+_kill || true
+
+_run &
+
