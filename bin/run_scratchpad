@@ -1,5 +1,6 @@
 #xterm -fa 'Glass TTY VT220' -fs 12 -title scratchpad -geometry 70x20+400+220
 #xterm -fa 'Cousine' -fs 8 -title scratchpad -geometry 70x20+400+220
 #xterm -fa 'IBM Plex Mono' -fs 8 -title scratchpad 
-xterm -fa 'Cousine' -fs 8 -title scratchpad 
+#xterm -fa 'Cousine' -fs 8 -title scratchpad 
+xterm -fa 'scientifica' -fs 9 -title scratchpad 
 
