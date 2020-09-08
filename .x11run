@@ -1,0 +1,8 @@
+#!/usr/local/bin/bash
+
+export TERM=xterm-256color
+
+source ~/.profile
+
+#/Applications/Utilities/XQuartz.app/Contents/MacOS/X11.bin "${@}"
+/Applications/MacPorts/X11.app/Contents/MacOS/X11.bin "${@}"

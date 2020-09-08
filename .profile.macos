@@ -52,7 +52,7 @@ contains "$0" "bash" && contains "$INTERACTIVE" "TRUE" && \
 	exec -l $GOODBASH --login || true
 
 
-
-#export PATH
+PATH="/opt/X11/bin:$PATH"
+export PATH
 
 

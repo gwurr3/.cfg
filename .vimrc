@@ -72,6 +72,14 @@ filetype plugin indent on
 noremap Q !!sh<CR>
 
 
+"== tab settings:
+set noexpandtab
+set cindent
+set copyindent
+set preserveindent
+set softtabstop=0
+set shiftwidth=4
+set tabstop=4
 
 "== make us some diff commands so we can see diff of current loaded file and
 "== pending changes without having to leave vim or save a temp file

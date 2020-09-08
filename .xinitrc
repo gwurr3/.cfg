@@ -43,6 +43,14 @@ xset fp rehash
 
 xsetroot -solid black
 
+case "$SHORTHOSTNAME" in
+	LAX-C02Z223WLVCJ)
+		/opt/local/bin/quartz-wm &
+		exec /opt/local/bin/xterm -ls &
+		exit 0
+		;;
+esac
+
 
 # screen powersave defaults
 xset +dpms

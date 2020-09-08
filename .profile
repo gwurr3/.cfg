@@ -141,3 +141,12 @@ fi
 #fi
 
 # EOF
+
+##
+# Your previous /Users/gwurr/.profile file was backed up as /Users/gwurr/.profile.macports-saved_2020-09-04_at_18:50:59
+##
+
+# MacPorts Installer addition on 2020-09-04_at_18:50:59: adding an appropriate PATH variable for use with MacPorts.
+export PATH="/opt/local/bin:/opt/local/sbin:$PATH"
+# Finished adapting your PATH environment variable for use with MacPorts.
+
