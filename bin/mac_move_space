@@ -1,0 +1,17 @@
+#!/bin/bash
+
+case "$1" in
+	[R,r]*)
+		osascript -e 'tell application "System Events" to key code 124 using control down'
+		;;
+	[L,l]*)
+		osascript -e 'tell application "System Events" to key code 123 using control down'
+		;;
+	[D,d]*)
+		osascript -e 'tell application "System Events" to key code 125 using control down'
+		;;
+
+	*)
+		exit 0
+		;;
+esac

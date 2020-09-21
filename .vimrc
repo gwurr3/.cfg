@@ -27,6 +27,8 @@ set showcmd             " display incomplete commands
 set showmode		" show current mode
 set incsearch           " do incremental searching
 set laststatus=2
+set textwidth=80
+set formatoptions=croqlj
 set encoding=utf-8
 syntax enable
 "set t_Co=8
@@ -53,9 +55,9 @@ if has('gui_running')
 endif
 
 " In many terminal emulators the mouse works just fine, thus enable it.
-if has('mouse')
-  set mouse=a
-endif
+" if has('mouse')
+"   set mouse=a
+" endif
 " actually, I don't really like mouse support
 set mouse=""
 
@@ -71,20 +73,29 @@ filetype plugin indent on
 "== make Q execute what is on the line
 noremap Q !!sh<CR>
 
-
 "== tab settings:
 set noexpandtab
 set cindent
-set copyindent
+set nocopyindent
+set nopreserveindent
 set preserveindent
 set softtabstop=0
 set shiftwidth=4
 set tabstop=4
 
+
+"== I like my marker folding and Hotkeys: <-FOLD-{
+set foldmethod=marker
+set foldmarker=<-FOLD-{,}->
+inoremap <F9> <C-O>za
+nnoremap <F9> za
+onoremap <F9> <C-C>za
+vnoremap <F9> zf
+"}->
+
 "== make us some diff commands so we can see diff of current loaded file and
 "== pending changes without having to leave vim or save a temp file
 command Udiff :w !diff -u % -
-
 noremap <F8> :Udiff<CR>
 
 "====[ Make tabs, trailing whitespace, and non-breaking spaces visible ]======
@@ -100,15 +111,50 @@ noremap <F6> :setlocal spell! spelllang=en_us<CR> " spell checking
 " F3 toggles paste mode
 set pastetoggle=<F3>
 
+" hjkl movement in insert mode with Ctrl key
+imap <C-h> <Left>
+imap <C-j> <Down>
+imap <C-k> <Up>
+imap <C-l> <Right>
+" activate visual (line) mode from normal mode with arrows UP/DOWN
+nmap <Up> V<Up>
+nmap <Down> V<Down>
+" Left/Right do indent shifts from normal mode
+nmap <Left> <<
+nmap <Right> >>
+" Left/Right do indent shifts from visual mode and reselect
+vmap <Left> <gv
+vmap <Right> >gv
+" F2 does an i_CTRL_R paste on last yank in insert mode
+inoremap <F2> <C-R>"
+" F4 does an i_CTRL_R paste of OS clipboard (literal, no indent, cuz CTRL-O)
+inoremap <F4> <C-R><C-O>*
+
+
+" Append modeline after last line in buffer.
+" Use substitute() instead of printf() to handle '%%s' modeline in LaTeX
+" files.
+function! AppendModeline()
+  let l:modeline = printf(" vim: set ts=%d sw=%d tw=%d %set sts=%d:",
+        \ &tabstop, &shiftwidth, &textwidth, &expandtab ? '' : 'no' ,
+		\ &softtabstop, )
+  let l:modeline = substitute(&commentstring, "%s", l:modeline, "")
+  call append(line("$"), l:modeline)
+endfunction
+" nnoremap <silent> <Leader>ml :call AppendModeline()<CR>
+nnoremap <F10> :call AppendModeline()<CR>
+
+
+nnoremap <F11> gggqG
+
 " map some shit for plugins
-
 inoremap <expr>  <C-K>   BDG_GetDigraph()
-
 
 "vmap <expr>  ++  VMATH_YankAndAnalyse()
 nmap         ++  vipy==
 nmap <expr>  ==  VMATH_Analyse()
 
+" sikkk visual block selection mover. shift-arrows
 vmap  <expr>  <S-LEFT>   DVB_Drag('left')
 vmap  <expr>  <S-RIGHT>  DVB_Drag('right')
 vmap  <expr>  <S-DOWN>   DVB_Drag('down')
@@ -125,20 +171,15 @@ vmap  <expr>  D        DVB_Duplicate()
 "    highlight ColorColumn ctermbg=magenta
 "    set colorcolumn=81
 
-    " OR ELSE just the 81st column of wide lines...
-    highlight ColorColumn ctermbg=magenta
-    call matchadd('ColorColumn', '\%81v', 100)
-
-    "    " OR ELSE on April Fools day...
-    "    highlight ColorColumn ctermbg=red ctermfg=blue
-    "    exec 'set colorcolumn=' . join(range(2,80,3), ',')
-
+" OR ELSE just the 81st column of wide lines...
+highlight ColorColumn ctermbg=magenta
+call matchadd('ColorColumn', '\%81v', 100)
 
 "=====[ Highlight matches when jumping to next ]=============
 
-    " This rewires n and N to do the highlighing...
-    nnoremap <silent> n   n:call HLNext(0.2)<cr>
-    nnoremap <silent> N   N:call HLNext(0.2)<cr>
+" This rewires n and N to do the highlighing...
+nnoremap <silent> n   n:call HLNext(0.2)<cr>
+nnoremap <silent> N   N:call HLNext(0.2)<cr>
 
 
 "    " EITHER blink the line containing the match...
@@ -151,23 +192,23 @@ vmap  <expr>  D        DVB_Duplicate()
 "    endfunction
 "
 "    " OR ELSE ring the match in red...
-    function! HLNext (blinktime)
-        highlight RedOnRed ctermfg=red ctermbg=red
-        let [bufnum, lnum, col, off] = getpos('.')
-        let matchlen = strlen(matchstr(strpart(getline('.'),col-1),@/))
-        echo matchlen
-        let ring_pat = (lnum > 1 ? '\%'.(lnum-1).'l\%>'.max([col-4,1]) .'v\%<'.(col+matchlen+3).'v.\|' : '')
-                \ . '\%'.lnum.'l\%>'.max([col-4,1]) .'v\%<'.col.'v.'
-                \ . '\|'
-                \ . '\%'.lnum.'l\%>'.max([col+matchlen-1,1]) .'v\%<'.(col+matchlen+3).'v.'
-                \ . '\|'
-                \ . '\%'.(lnum+1).'l\%>'.max([col-4,1]) .'v\%<'.(col+matchlen+3).'v.'
-        let ring = matchadd('RedOnRed', ring_pat, 101)
-        redraw
-        exec 'sleep ' . float2nr(a:blinktime * 1000) . 'm'
-        call matchdelete(ring)
-        redraw
-    endfunction
+function! HLNext (blinktime)
+    highlight RedOnRed ctermfg=red ctermbg=red
+    let [bufnum, lnum, col, off] = getpos('.')
+    let matchlen = strlen(matchstr(strpart(getline('.'),col-1),@/))
+    echo matchlen
+    let ring_pat = (lnum > 1 ? '\%'.(lnum-1).'l\%>'.max([col-4,1]) .'v\%<'.(col+matchlen+3).'v.\|' : '')
+            \ . '\%'.lnum.'l\%>'.max([col-4,1]) .'v\%<'.col.'v.'
+            \ . '\|'
+            \ . '\%'.lnum.'l\%>'.max([col+matchlen-1,1]) .'v\%<'.(col+matchlen+3).'v.'
+            \ . '\|'
+            \ . '\%'.(lnum+1).'l\%>'.max([col-4,1]) .'v\%<'.(col+matchlen+3).'v.'
+    let ring = matchadd('RedOnRed', ring_pat, 101)
+    redraw
+    exec 'sleep ' . float2nr(a:blinktime * 1000) . 'm'
+    call matchdelete(ring)
+    redraw
+endfunction
 "
     " OR ELSE briefly hide everything except the match...
 "    function! HLNext (blinktime)
