@@ -56,6 +56,9 @@ set wildignore+=tags
 set wildignore+=*.tar.*
 set wildignorecase
 
+source $VIMRUNTIME/menu.vim
+map <F1> :emenu <C-Z>
+
 
 " buffers and windows
 
@@ -142,7 +145,7 @@ vnoremap <F9> zf
 
 "== make us some diff commands so we can see diff of current loaded file and
 "== pending changes without having to leave vim or save a temp file
-command Udiff :w !diff -u % -
+command! Udiff :w !diff -u % -
 noremap <F8> :Udiff<CR>
 
 "====[ Make tabs, trailing whitespace, and non-breaking spaces visible ]======
@@ -303,9 +306,6 @@ endfunction
 
 
 
-
-
-
 " some plugin stuff
 "
 
@@ -382,5 +382,23 @@ if has('cscope')
 
 	au BufEnter /* call LoadCscope()
 endif
+
+
+
+" some 'Make' shortcuts
+function! MakeCompleteCustom(A,L,P)
+	return system("make -qp | awk -F':' '/^[a-zA-Z0-9][^$#\/\t=]*:([^=]|$)/ {split($1,A,/ /);for(i in A)print A[i]}' | sort -u")
+endfun
+
+command! -complete=custom,MakeCompleteCustom -nargs=* Make make clean && make <args> | cwindow 10 clist
+
+" TODO: make a menu for 'ScopeFine' with
+" https://github.com/skywind3000/quickmenu.vim
+" command! -complete=customlist,CsCompleteCustom -nargs=1 ScopeFind cs find <args> expand{<cWORD>} | cwindow 10 clist
+
+" Edit vimr configuration file
+nnoremap <Leader>ve :e $MYVIMRC<CR>
+" Reload vimr configuration file
+nnoremap <Leader>vr :source $MYVIMRC<CR>
 
 
