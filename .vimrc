@@ -44,6 +44,53 @@ set modelines=10
 map <Leader>bg :let &background = ( &background == "dark"? "light" : "dark" )<CR>
 
 
+" that wildmenu
+set wildmenu
+" set wildmode=longest:full,full
+set wildmode=list:full
+set wildcharm=<C-Z>
+set wildignore=*.swp,*.bak
+set wildignore+=*.pyc,*.class,*.sln,*.Master,*.csproj,*.csproj.user,*.cache,*.dll,*.pdb,*.min.*
+set wildignore+=*/.git/**/*,*/.hg/**/*,*/.svn/**/*
+set wildignore+=tags
+set wildignore+=*.tar.*
+set wildignorecase
+
+
+" buffers and windows
+
+set splitbelow
+set splitright
+
+set hidden
+set confirm
+nnoremap <Leader>\ :ls<CR>:b<Space><C-Z>
+nnoremap <Leader>] :bnext<CR>
+nnoremap <Leader>[ :bprev<CR>
+
+" hjkl window movement in normal mode with Ctrl key
+nnoremap <C-h> :wincmd h<CR>
+nnoremap <C-j> :wincmd j<CR>
+nnoremap <C-k> :wincmd k<CR>
+nnoremap <C-l> :wincmd l<CR>
+
+" buftabline plugin stuff
+let g:buftabline_numbers=1
+let g:buftabline_show=2
+let g:buftabline_indicators=1
+let g:buftabline_separators=1
+nmap <leader>1 <Plug>BufTabLine.Go(1)
+nmap <leader>2 <Plug>BufTabLine.Go(2)
+nmap <leader>3 <Plug>BufTabLine.Go(3)
+nmap <leader>4 <Plug>BufTabLine.Go(4)
+nmap <leader>5 <Plug>BufTabLine.Go(5)
+nmap <leader>6 <Plug>BufTabLine.Go(6)
+nmap <leader>7 <Plug>BufTabLine.Go(7)
+nmap <leader>8 <Plug>BufTabLine.Go(8)
+nmap <leader>9 <Plug>BufTabLine.Go(9)
+nmap <leader>0 <Plug>BufTabLine.Go(10)
+
+
 " Suffixes that get lower priority when doing tab completion for filenames.
 " " These are files we are not likely to want to edit or read.
 set suffixes=.bak,~,.swp,.o,.info,.aux,.log,.dvi,.bbl,.blg,.brf,.cb,.ind,.idx,.ilg,.inx,.out,.toc,.png,.jpg
@@ -297,3 +344,43 @@ let g:vimwiki_folding='list'
 " cf3 stuff
 :helptags ~/.vim/doc/
 autocmd BufRead,BufNewFile *.cf normal zR
+
+
+" ctags and such
+set tags+=./ctags;ctags;
+set tagrelative
+set tagstack
+
+"cscope
+function! LoadCscope()
+	let db = findfile("cscope", ".;")
+	if (!empty(db))
+		let path = strpart(db, 0, match(db, "/cscope.out$"))
+		set nocscopeverbose " suppress 'duplicate connection' error
+		exe "cs add " . db . " " . path
+		set cscopeverbose
+		" else add the database pointed to by environment variable 
+	elseif $CSCOPE_DB != "" 
+		cs add $CSCOPE_DB
+	endif
+endfunction
+
+
+if has('cscope')
+	set cscopetag cscopeverbose
+
+	if has('quickfix')
+		set cscopequickfix=s-,c-,d-,i-,t-,e-
+	endif
+
+	cnoreabbrev csa cs add
+	cnoreabbrev csf cs find
+	cnoreabbrev csk cs kill
+	cnoreabbrev csr cs reset
+	cnoreabbrev css cs show
+	cnoreabbrev csh cs help
+
+	au BufEnter /* call LoadCscope()
+endif
+
+
