@@ -99,6 +99,8 @@ alias decrypt='gpg --use-agent --batch -d'
 alias dotfiles='git --git-dir=$HOME/.cfg/ --work-tree=$HOME' # this is for the git repo that this file is a part of
 alias dotfiles-update='dotfiles status && dotfiles pull && dotfiles submodule init && dotfiles submodule update && dotfiles submodule status && dotfiles status'
 alias dotfiles-check='dotfiles status -unormal' # so we can see untracked files without recursively listing entire homedir
+alias df='dotfiles'
+alias dfc='dotfiles-check'
 
 
 #######---------------- GOLANG

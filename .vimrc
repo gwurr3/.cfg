@@ -390,7 +390,8 @@ function! MakeCompleteCustom(A,L,P)
 	return system("make -qp | awk -F':' '/^[a-zA-Z0-9][^$#\/\t=]*:([^=]|$)/ {split($1,A,/ /);for(i in A)print A[i]}' | sort -u")
 endfun
 
-command! -complete=custom,MakeCompleteCustom -nargs=* Make make clean && make <args> | cwindow 10 clist
+command! -complete=custom,MakeCompleteCustom -nargs=* Make make clean && make <args> | cwindow 10 | clist
+map <F7> :Make <C-Z>
 
 " TODO: make a menu for 'ScopeFine' with
 " https://github.com/skywind3000/quickmenu.vim
