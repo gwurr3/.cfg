@@ -342,8 +342,10 @@ let g:vimwiki_folding='list'
 
 
 " cf3 stuff
+let g:DisableCF3DefFolding=1
 :helptags ~/.vim/doc/
-autocmd BufRead,BufNewFile *.cf normal zR
+"autocmd BufRead,BufNewFile *.cf normal zR
+autocmd BufRead,BufNewFile *.cf normal zM
 
 
 " ctags and such

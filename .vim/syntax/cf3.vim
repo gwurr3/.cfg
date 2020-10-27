@@ -597,8 +597,8 @@ function! CF3Folds()
 
 endfunction
 
-setlocal foldmethod=expr
-setlocal foldexpr=CF3Folds()
+"setlocal foldmethod=expr
+"setlocal foldexpr=CF3Folds()
 
 " }}}
 
@@ -624,3 +624,15 @@ setlocal foldexpr=CF3Folds()
 "
 " You should have received a copy of the GNU General Public License along with
 " this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
+" Check to see if DisableCF3DefFolding is set
+" If you dont want the folding put "let g:DisableCF3DefFolding=1" in
+" ~/.vimrc
+if exists("g:DisableCF3DefFolding")
+    finish
+endif
+
+setlocal foldmethod=expr
+setlocal foldexpr=CF3Folds()
+
