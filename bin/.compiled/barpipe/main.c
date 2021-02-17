@@ -129,6 +129,10 @@ int main( int argc, char *argv[] )
 
 	} else if ( argc == 2 && (strcmp(argv[1], "-h") != 0) ) {
 		strlcpy(configfile, argv[1], sizeof(configfile));
+	} else if ( argc == 3 && (strcmp(argv[1], "-h") != 0) ) {
+		if(chdir(argv[1]))
+			warnx("could not set CWD to %s", argv[1]);
+		strlcpy(configfile, argv[2], sizeof(configfile));
 	} else {
 		errx(1, USAGE_STRING, progname, progname, progname, progname, progname, progname);
 	}

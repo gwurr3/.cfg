@@ -6,4 +6,15 @@ done
 
 killall -9 barpipe
 
-bspc subscribe report | barpipe &
+if [ "${BARPIPE_CONF:-unset}" != "unset" ]; then
+	echo "using alt barpipe config $BARPIPE_CONF !" | tee /dev/stderr
+	if [ "${BARPIPE_CONFDIR:-unset}" != "unset" ]; then
+		bspc subscribe report | \
+			barpipe "${BARPIPE_CONFDIR}/" "${BARPIPE_CONF}" &
+	else
+		bspc subscribe report | \
+			barpipe "${HOME}/.config/barpipe/" "${BARPIPE_CONF}" &
+	fi
+else
+	bspc subscribe report | barpipe &
+fi
