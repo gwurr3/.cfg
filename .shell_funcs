@@ -7,49 +7,49 @@
 #
 
 
-ssh-blast() {
-
-	local sshretval
-
-	while [ "$sshretval" != "0" ] ; do
-		ssh -o "ConnectTimeout=1" \
-		-o "BatchMode=yes" \
-		-o "StrictHostKeyChecking=no" \
-		-o "UserKnownHostsFile=/dev/null"\
-		-o "PreferredAuthentications=publickey"\
-		$@
-
-		let sshretval="$?"
-	done
-}
-
-
-for i in sha512 sha256 sha1 md5; do
-	eval "ssl-cert-${i}() {
-		openssl x509 -noout -fingerprint -${i} -in \$1 
-	}"
-done; unset i
-
-ssl-cert-fingerprints() {
-	local i
-	if [[ -z $1 ]] ; then 
-		printf 'usage: ssl-cert-fingerprints <file>\n'
-		return 1
-	fi
-	for i in sha512 sha256 sha1 md5 ; do
-		ssl-cert-$i $1;
-	done
-}
-
-ssl-cert-info() {
-	if [[ -z $1 ]] ; then 
-		printf 'usage: ssl-cert-info <file>\n'
-		return 1
-	fi
-	openssl x509 -noout -text -in $1
-	ssl-cert-fingerprints $1
-}
-
+#ssh-blast() {
+#
+#	local sshretval
+#
+#	while [ "$sshretval" != "0" ] ; do
+#		ssh -o "ConnectTimeout=1" \
+#		-o "BatchMode=yes" \
+#		-o "StrictHostKeyChecking=no" \
+#		-o "UserKnownHostsFile=/dev/null"\
+#		-o "PreferredAuthentications=publickey"\
+#		$@
+#
+#		let sshretval="$?"
+#	done
+#}
+#
+#
+#for i in sha512 sha256 sha1 md5; do
+#	eval "ssl-cert-${i}() {
+#		openssl x509 -noout -fingerprint -${i} -in \$1 
+#	}"
+#done; unset i
+#
+#ssl-cert-fingerprints() {
+#	local i
+#	if [[ -z $1 ]] ; then 
+#		printf 'usage: ssl-cert-fingerprints <file>\n'
+#		return 1
+#	fi
+#	for i in sha512 sha256 sha1 md5 ; do
+#		ssl-cert-$i $1;
+#	done
+#}
+#
+#ssl-cert-info() {
+#	if [[ -z $1 ]] ; then 
+#		printf 'usage: ssl-cert-info <file>\n'
+#		return 1
+#	fi
+#	openssl x509 -noout -text -in $1
+#	ssl-cert-fingerprints $1
+#}
+#
 
 set_title () {
 	if [ "$0" = "bash" ] || [ "$0" = "zsh" ] ; then
@@ -92,7 +92,7 @@ nls() {
 }
 
 
-list-fonts() {
+list_fonts() {
 	fc-scan --format "-%{foundry}-%{family}\n"  `pwd`
 }
 

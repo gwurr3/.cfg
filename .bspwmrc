@@ -71,6 +71,70 @@ else
 			bspc monitor LVDS1 --rename MAIN
 			bspc monitor MAIN -d I II III IRC1 IRC2 IRC3 misc misc2 WEB2 WEB1 
 			;;
+		t410)
+			export BARPIPE_CONF=t410.conf
+			if xrandr --listactivemonitors | grep -q LVDS1 ; then
+				# if LVDS is still ON...
+				if [[ $(xrandr | grep 'LVDS1 connected') != "" ]] && \
+					[[ $(xrandr | grep 'VGA1 connected') != "" ]] && \
+					[[ $(xrandr | grep 'HDMI1 connected') != "" ]]; then
+					bspc monitor HDMI1 --rename ONE
+					bspc monitor VGA1 --rename TWO
+					bspc monitor LVDS1 --rename THREE
+					bspc monitor ONE -d I II III misc
+					bspc monitor TWO -d WEB2 WEB1 misc2
+					bspc monitor THREE -d IRC1 IRC2 IRC3 
+					export BARPIPE_CONF=t410-three.conf
+
+
+				elif [[ $(xrandr | grep 'LVDS1 connected') != "" ]] && \
+					[[ $(xrandr | grep 'VGA1 connected') != "" ]]; then
+					bspc monitor VGA1 --rename MAIN
+					bspc monitor LVDS1 --rename XTRA
+					bspc monitor MAIN -d I II III misc WEB2 WEB1 
+					bspc monitor XTRA -d misc2 IRC1 IRC2 IRC3 
+					export BARPIPE_CONF=t410-two.conf
+
+				elif [[ $(xrandr | grep 'LVDS1 connected') != "" ]] && \
+					[[ $(xrandr | grep 'HDMI1 connected') != "" ]]; then
+					bspc monitor HDMI1 --rename MAIN
+					bspc monitor LVDS1 --rename XTRA
+					bspc monitor MAIN -d I II III misc WEB2 WEB1 
+					bspc monitor XTRA -d misc2 IRC1 IRC2 IRC3 
+					export BARPIPE_CONF=t410-two.conf
+
+				else
+					bspc monitor LVDS1 --rename SINGLE
+					export BARPIPE_CONF=t410.conf
+					bspc monitor SINGLE -d I II III IRC1 IRC2 IRC3 misc misc2 WEB2 WEB1 
+				fi
+			else # if we turned off LVDS1...
+
+				if [[ $(xrandr | grep 'HDMI1 connected') != "" ]] && \
+					[[ $(xrandr | grep 'VGA1 connected') != "" ]]; then
+					#bspc wm --add-monitor WIDE 3840x1080+0+0
+					bspc wm --add-monitor WIDE 3820x1040+10+20
+					bspc monitor VGA1 --rename RIGHT
+					bspc monitor HDMI1 --rename LEFT
+					bspc wm --reorder-monitors LEFT RIGHT WIDE
+					bspc monitor WIDE -d WIDE
+					bspc monitor RIGHT -d misc misc2 WEB2 WEB1
+					bspc monitor LEFT -d I II III IRC1 IRC2
+					export BARPIPE_CONF=t410-twoext.conf
+
+				else
+					# down to one monitor here
+					if [[ $(xrandr | grep 'HDMI1 connected') != "" ]]; then
+						bspc monitor HDMI1 --rename SINGLE
+						export BARPIPE_CONF=t410-ext.conf
+					elif [[ $(xrandr | grep 'VGA1 connected') != "" ]]; then
+						bspc monitor VGA1 --rename SINGLE
+						export BARPIPE_CONF=t410-ext.conf
+					fi
+					bspc monitor SINGLE -d I II III IRC1 IRC2 IRC3 misc misc2 WEB2 WEB1 
+				fi
+			fi
+			;;
 		lappytop)
 			bspc monitor LVDS1 --rename MAIN
 
@@ -150,13 +214,23 @@ case "$SHORTHOSTNAME" in
 			bspc config -m RIGHT top_padding 0
 		fi
 		;;
+	t410)
+		if [[ $(xrandr | grep 'HDMI1 connected') != "" ]] || \
+			[[ $(xrandr | grep 'VGA1 connected') != "" ]]; then
+		bspc config -m MAIN top_padding 20 2>/dev/null || true
+		bspc config -m MIDDLE top_padding 20 2>/dev/null || true
+		bspc config -m LEFT top_padding 20 2>/dev/null || true
+		bspc config -m RIGHT top_padding 20 2>/dev/null || true
+		bspc config -m XTRA top_padding 0 2>/dev/null || true
+		fi
+		;;
 	*)
 
 		;;
 
 esac
 
-topbar &
+topbar 2>$HOME/topbar.log &
 bottombar &
 
 # so we don't re-run the startup progs everytime we quit bspwm but don't leave the loop in .xinitrc

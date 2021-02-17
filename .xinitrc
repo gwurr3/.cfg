@@ -54,7 +54,7 @@ esac
 
 # screen powersave defaults
 xset +dpms
-xset dpms 0 0 300
+xset dpms 0 0 3600
 
 # allow local connections from current user to X
 xhost +local:`whoami`
@@ -72,12 +72,39 @@ case "$SHORTHOSTNAME" in
 		fi
 
 		;;
-	fourten)
+	t410)
 		#dispwin -d 1 ~/T410/monitorfiles/MONITOR/t410.icc 
-		if [[ $(xrandr | grep 'HDMI1 connected') != "" ]]; then
-		#	xrandr --output VGA1 --auto --right-of LVDS1
-			 xrandr --output HDMI1 --auto --right-of LVDS1
+		if cat /proc/acpi/button/lid/LID/state | grep -q closed ; then 
+			echo yes
+			xrandr --output LVDS1 --off
 		fi
+		
+		if xrandr --listactivemonitors | grep -q LVDS1 ; then
+			# need to see if we set it to inactive ^
+			if [[ $(xrandr | grep 'LVDS1 connected') != "" ]] && \
+				[[ $(xrandr | grep 'VGA1 connected') != "" ]] && \
+				[[ $(xrandr | grep 'HDMI1 connected') != "" ]]; then
+				xrandr --output LVDS1 --auto
+				xrandr --output VGA1 --auto --left-of LVDS1
+				xrandr --output HDMI1 --auto --left-of VGA1
+
+			elif [[ $(xrandr | grep 'LVDS1 connected') != "" ]] && \
+				[[ $(xrandr | grep 'VGA1 connected') != "" ]]; then
+				xrandr --output LVDS1 --auto
+				xrandr --output VGA1 --auto --left-of LVDS1
+
+			elif [[ $(xrandr | grep 'LVDS1 connected') != "" ]] && \
+				[[ $(xrandr | grep 'HDMI1 connected') != "" ]]; then
+				xrandr --output LVDS1 --auto
+				xrandr --output HDMI1 --auto --left-of LVDS1
+			fi
+		fi
+		if [[ $(xrandr | grep 'HDMI1 connected') != "" ]] && \
+			[[ $(xrandr | grep 'VGA1 connected') != "" ]]; then
+			xrandr --output VGA1 --auto
+			xrandr --output HDMI1 --auto --left-of VGA1
+		fi
+
 
 		xbacklight -set 45
 
@@ -88,21 +115,21 @@ case "$SHORTHOSTNAME" in
 		#xset fp+ /usr/local/share/fonts/urwfonts
 		#xset fp rehash
 
-		#synclient TapButton1=1
-		#synclient VertEdgeScroll=1
+		synclient TapButton1=1
+		synclient VertEdgeScroll=1
 
-		## activate scroll wheel button on OpenBSD
-		xinput set-prop "/dev/wsmouse" "WS Pointer Wheel Emulation" 1
-		xinput set-prop "/dev/wsmouse" "WS Pointer Wheel Emulation Axes" 6 7 4 5
-		xinput set-prop "/dev/wsmouse" "WS Pointer Wheel Emulation Button" 2
-		xinput set-prop "/dev/wsmouse" "WS Pointer Wheel Emulation Timeout" 50
-		xinput set-prop "/dev/wsmouse" "WS Pointer Wheel Emulation Inertia" 3
-		# increase pointer speed
-		xinput set-prop "/dev/wsmouse" "Device Accel Constant Deceleration" 0.6
+		# ## activate scroll wheel button on OpenBSD
+		# xinput set-prop "/dev/wsmouse" "WS Pointer Wheel Emulation" 1
+		# xinput set-prop "/dev/wsmouse" "WS Pointer Wheel Emulation Axes" 6 7 4 5
+		# xinput set-prop "/dev/wsmouse" "WS Pointer Wheel Emulation Button" 2
+		# xinput set-prop "/dev/wsmouse" "WS Pointer Wheel Emulation Timeout" 50
+		# xinput set-prop "/dev/wsmouse" "WS Pointer Wheel Emulation Inertia" 3
+		# # increase pointer speed
+		# xinput set-prop "/dev/wsmouse" "Device Accel Constant Deceleration" 0.6
 		# disable system beep
 		xset b off
 		# use caps lock as ctrl key
-		#setxkbmap -option ctrl:nocaps
+		setxkbmap -option ctrl:nocaps
 
 		;;
 	sexbox)
@@ -120,6 +147,17 @@ case "$SHORTHOSTNAME" in
 		[[ $(xrandr | grep 'HDMI1 connected') != "" ]] && xrandr --output HDMI1 --auto --left-of DP1
 		;;
 esac
+
+
+case "$SHORTHOSTNAME" in
+	t410)
+		#exec ~/.xinitrc_cde
+		#exec fvwm
+		;;
+esac
+
+
+
 ## END BOX-SPECIFC ZONE ################
 
 # color temp and bg AFTER screen setup is done
@@ -132,10 +170,9 @@ eval $(ssh-agent)
 
 
 ## Startup the WM stuff
-
 # so the programs will get started the first time bspwm starts
 [ -f $AUTOSTARTCHECKFILE ] && rm -f $AUTOSTARTCHECKFILE
 run_util sxhkd -c ~/.sxhkdrc
 while true ; do
-	bspwm -c ~/.bspwmrc || break
+	bspwm -c ~/.bspwmrc 2>$HOME/bspwm.log || break
 done

@@ -10,11 +10,32 @@
 
 #######---------------- COMMON ENV VARIABLES
 
+# PD KSH and OpenBSD-KSH:
+# $ echo $KSH_VERSION
+# @(#)PD KSH v5.2.14 99/07/13.2
+
+# REAL KSH:
+# $ echo $KSH_VERSION
+# Version A 2020.0.0
+
+# MirBSD KSH:
+# $ echo $KSH_VERSION
+# @(#)MIRBSD KSH R59 2020/10/31
+
+REAL_KSH=False
+[ "${KSH_VERSION:-unset}" = unset ] || \
+	contains "$KSH_VERSION" "-ksh" || \
+	contains "$KSH_VERSION" "-mksh" || \
+	export REAL_KSH=TRUE
+
+
 PATH=$HOME/bin:$PATH
 if contains "$0" "bash" || contains "$0" "-ksh" ; then 
 	PS1="\n\u@\H \n\w \\$ " # bash and OpenBSD-ksh
 elif contains "$0" "-mksh" ; then 
 	PS1=$'$USER@`hostname` \n${PWD/$HOME/~} \$ ' # for mksh
+elif contains "$0" "ksh" && contains "$REAL_KSH" "TRUE" ; then 
+	PS1=$'`whoami`@`hostname` \n${PWD/$HOME/~} \$ ' # for real KSH
 elif contains "$0" "zsh"  ; then 
 	PS1='$ ' # this is set elsewhere, later, for zsh
 fi
@@ -28,7 +49,7 @@ if contains "$0" "bash" ; then
 	HISTSIZE=10000
 	HISTFILESIZE=99999
 	shopt -s histappend
-elif contains "$0" "-ksh" || contains "$0" "-mksh" ; then 
+elif contains "$0" "ksh" ; then 
 	HISTFILE=$HOME/.ksh_history
 elif contains "$0" "zsh" ; then 
 	HISTFILE=$HOME/.zsh_history
@@ -99,8 +120,8 @@ alias decrypt='gpg --use-agent --batch -d'
 alias dotfiles='git --git-dir=$HOME/.cfg/ --work-tree=$HOME' # this is for the git repo that this file is a part of
 alias dotfiles-update='dotfiles status && dotfiles pull && dotfiles submodule init && dotfiles submodule update && dotfiles submodule status && dotfiles status'
 alias dotfiles-check='dotfiles status -unormal' # so we can see untracked files without recursively listing entire homedir
-alias df='dotfiles'
-alias dfc='dotfiles-check'
+alias dotf='dotfiles'
+alias dotfc='dotfiles-check'
 
 
 #######---------------- GOLANG
@@ -117,7 +138,7 @@ fi
 
 export PATH HOME TERM EDITOR HISTFILE HISTSIZE HISTFILESIZE LC_CTYPE LANG PS1 PS2 PS3 PS4 PAGER BROWSER CLICOLOR VISUAL UNAME XDG_CONFIG_HOME SHORTHOSTNAME EMAIL IS_THIS_A_MAC IS_THIS_ITERM2 RANGER_LOAD_DEFAULT_RC _JAVA_AWT_WM_NONREPARENTING
 
-test "$0" != "zsh" && set -o vi
+test "$0" != "zsh" && set -o emacs
 umask 022
 
 #######---------------- Bash-specific ricing
@@ -143,12 +164,3 @@ fi
 #fi
 
 # EOF
-
-##
-# Your previous /Users/gwurr/.profile file was backed up as /Users/gwurr/.profile.macports-saved_2020-09-04_at_18:50:59
-##
-
-# MacPorts Installer addition on 2020-09-04_at_18:50:59: adding an appropriate PATH variable for use with MacPorts.
-export PATH="/opt/local/bin:/opt/local/sbin:$PATH"
-# Finished adapting your PATH environment variable for use with MacPorts.
-
